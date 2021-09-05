@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,9 +26,16 @@ public class MemberController {
 	//jsp호출
 }
 	@RequestMapping(value="registerMember.do", method=RequestMethod.POST)
-	public void RegisterMember(Member member,RedirectAttributes rttr) {
+	public String RegisterMember(@ModelAttribute("myMem") Member member,RedirectAttributes rttr) throws Exception {
 		//registerMember.jsp 에서 유저가 입력한 데이터를 스프링 컨테이너가 멤버의 세터 자동호출하여 멤버객체를 만들어서 이 메서드 호출
 		logger.info(member.toString());
+		rttr.addAttribute(member);
+		if(service.insertMember(member)) {
+			rttr.addFlashAttribute("status","success");
+		}else {
+			rttr.addFlashAttribute("status","fail");
+		}
+		
 		//service 단을 거쳐서 dao로
 		//addflashattribute 는 attribute 로 바인딩(임시적(flash) 으로 데이터를 바인딩) 임시적으로 필요한 데이터만 이걸로 새로고침하면 사라짐
 //		rttr.addFlashAttribute("name",member.getName());
@@ -37,7 +45,8 @@ public class MemberController {
 //		rttr.addAttribute("member",member.toString());
 //		rttr.addAttribute("birth",member.getBirth());
 //		rttr.addAttribute("name",member.getName());
-//		return "redirect:showMember";
+		
+		return "redirect:showMember";
 	}
 	@RequestMapping("/showMember")
 	public void showMember() {

@@ -20,6 +20,8 @@
 	 <div>${birth }</div>
 	 <div>${memberInfo }</div>
 	 <div>${member }</div>
-	 
+	 </hr>
+	 <h2>myMem</h2>
+	 <div>${myMem.userid}</div>
 </body>
 </html>
