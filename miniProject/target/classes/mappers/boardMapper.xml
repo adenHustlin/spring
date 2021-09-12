@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.miniProj.mapper.boardMapper">
-  
-  	<select id="selectAllBoard" resultType="domain.BoardVo">
-  		SELECT * FROM board order by no desc
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miniProj.mapper.boardMapper">
+
+	<select id="selectAllBoard" resultType="domain.BoardVo">
+  		 select * from board order by no desc limit #{startNum}, #{postPerPage}
   	</select>
-  	
-  	<insert id="createBoard">
-  		insert into board(title, writer, pwd, content, image) 
-  			values(#{title}, #{writer}, #{pwd}, #{content}, #{image})
+
+	<insert id="createBoardWithImage">
+  		insert into board(title, writer, pwd, content, image, thumbimage)
+values(#{title}, #{writer}, #{pwd}, #{content}, #{image}, #{thumbimage})
   	</insert>
-  </mapper>
+
+	<insert id="createBoardWithNoImage">
+  		insert into board(title, writer, pwd, content, notimage)
+values(#{title}, #{writer}, #{pwd}, #{content}, #{notimage})
+  	</insert>
+
+	<insert id="createBoard">
+  		insert into board(title, writer, pwd, content) 
+  		values (#{title}, #{writer}, #{pwd}, #{content})
+  	</insert>
+
+	<insert id="insertMemberPoint">
+  		insert into memberpoint(userid, howmuch, why) values(#{userid}, #{howmuch}, #{why})
+  	</insert>
+	<select id="getTotalPostCnt" resultType="string">
+	select count(*) from board
+</select>
+	<select id="selectBoard" resultType="domain.BoardVo">
+	select * from board where no=#{no}
+</select>
+	<update id="increaseReadCount">
+	update board set readcount=readcount+1 where no=#{no}
+	</update>
+</mapper>

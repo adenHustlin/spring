@@ -13,7 +13,13 @@
 	</div>
 	
 	<div>
-		${error }
+		${errorMsg }
+		
+	</div>
+	<div>
+		<c:forEach var="e" items="${error }">
+			<div>${e }</div>
+		</c:forEach>
 	</div>
 </body>
 </html>

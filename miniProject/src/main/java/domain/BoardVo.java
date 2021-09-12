@@ -12,13 +12,30 @@ public class BoardVo {
 	private String pwd;
 	private String content;
 	private String image;
-	
+	private String notimage;
+	private String thumbimage;
+	public String getNotimage() {
+		return notimage;
+	}
+
+	public void setNotimage(String notimage) {
+		this.notimage = notimage;
+	}
+
+	public String getThumbimage() {
+		return thumbimage;
+	}
+
+	public void setThumbimage(String thumbimage) {
+		this.thumbimage = thumbimage;
+	}
+
 	public BoardVo() {
 		super();
 	}
 	
 	public BoardVo(int no, String title, String writer, Timestamp postdate, int readcount, int likecount, String pwd,
-			String content, String image) {
+			String content, String image, String notimage, String thumbimage) {
 		super();
 		this.no = no;
 		this.title = title;
@@ -29,8 +46,9 @@ public class BoardVo {
 		this.pwd = pwd;
 		this.content = content;
 		this.image = image;
+		this.notimage = notimage;
+		this.thumbimage = thumbimage;
 	}
-
 	public int getNo() {
 		return no;
 	}

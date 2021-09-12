@@ -21,12 +21,13 @@ public class CommonExceptionProcess {
 	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView commonExceptionHandler(Exception e) {
-		logger.info("예외처리 이동"+e);
+		logger.info("예외처리 이동");
+		e.printStackTrace();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("commonError");
-		mav.addObject("error", e);
-		
+		mav.addObject("error", e.getStackTrace());
+		mav.addObject("errorMsg",e.getMessage());
 		return mav;
 	}
 	

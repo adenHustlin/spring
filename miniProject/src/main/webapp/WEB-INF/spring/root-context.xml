@@ -32,7 +32,7 @@
 	</bean>
 	
 	
+	<context:component-scan base-package="persistence*" />
+	<context:component-scan base-package="service*" />
 	
-	<context:component-scan base-package="persistence.board" />
-	<context:component-scan base-package="service.board" />
 </beans>

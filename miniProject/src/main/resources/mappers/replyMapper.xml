@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.miniProj.mapper.replyMapper">
+  	<select id="replyList" resultType="domain.ReplyVo">
+  		select * from reply where bno=#{bno}
+  	</select>
+  	<insert id="create">
+		insert into reply(bno,contents,replyer,issecret) values(#{bno},#{contents},#{replyer},#{isSecret})
+	</insert>
+	<update id="modify">
+		update reply set contents=#{contents}, modifydate=now(), issecret=#{isSecret} where no=#{no}
+	</update>
+	<delete id="remove">
+		delete from reply where no= #{no}
+	</delete>
+  </mapper>

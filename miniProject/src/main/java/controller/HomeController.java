@@ -19,13 +19,21 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
-		
+	
 		return "index";
 	}
 	
 	@RequestMapping("/fileUpload")
 	public String fileUploadPageLoading() {
 		return "fileUploadEx";
+	}
+	@RequestMapping("/interA")
+	public String interA() {
+		return "fileUploadEx";
+	}
+	@RequestMapping("/test")
+	public String asd() {
+		return "navBar";
 	}
 	
 }

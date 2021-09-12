@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.miniProj.mapper.memberMapper">
+
+  	<select id="login" resultType="domain.MemberVo">
+  		select * from member where userid=#{userid} and password=sha1(md5(#{password}))
+  	</select>
+  	<update id="keepLogin">
+	update member set sessionid=#{sessionid}, sessionage=#{sessionage} where userid=#{userid}
+</update>
+<select id="checkUserWithSessionKey" resultType="domain.MemberVo">
+	select * from member where sessionid=#{value}
+</select>
+
+  </mapper>
