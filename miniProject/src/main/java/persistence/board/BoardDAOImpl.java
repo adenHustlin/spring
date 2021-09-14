@@ -68,5 +68,6 @@ public class BoardDAOImpl implements BoardDAO {
 
 		ses.update(namespace+".increaseReadCount",no);
 	}
+	
 
 }

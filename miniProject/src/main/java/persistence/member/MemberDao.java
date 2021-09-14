@@ -19,4 +19,8 @@ public interface MemberDao {
 	//자동로그인
 	void keepLogin(LoginDTO dto)throws Exception;
 	MemberVo checkUserWithSessionKey(String value) throws Exception;
+	
+	public int memberRegister(MemberVo vo);
+	
+	public MemberVo useridConfirm(String userid);
 }

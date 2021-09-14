@@ -39,4 +39,16 @@ public class MemberServiceImpl implements MemberService{
 		return dao.checkUserWithSessionKey(value);
 	}
 
+	@Override
+	public int memberRegister(MemberVo vo) throws Exception {
+		
+		return dao.memberRegister(vo);
+	}
+
+	@Override
+	public MemberVo useridConfirm(String userid) {
+		
+		return dao.useridConfirm(userid);
+	}
+
 }

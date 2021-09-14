@@ -43,6 +43,7 @@ public interface BoardDAO {
 			 */
 			void updateReadCount(int no)throws NamingException, SQLException;
 
+			
 	
 			
 }

@@ -38,5 +38,15 @@ public class MemberDaoImpl implements MemberDao {
 	public MemberVo checkUserWithSessionKey(String value) throws Exception {
 		return ses.selectOne(ns+".checkUserWithSessionKey",value);
 	}
+	@Override
+	public int memberRegister(MemberVo vo) {
+		// TODO Auto-generated method stub
+		return ses.insert(ns+".memberRegister",vo);
+	}
+	@Override
+	public MemberVo useridConfirm(String userid) {
+	
+		return ses.selectOne(ns+".useridConfirm",userid);
+	}
 
 }

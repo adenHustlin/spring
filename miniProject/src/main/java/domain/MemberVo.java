@@ -16,6 +16,13 @@ public class MemberVo {
 	private Timestamp registerDate;
 	private String sessionid;
 	private Timestamp sessionage;
+	private String phone;
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	public String getUserid() {
 		return userid;
 	}
@@ -70,14 +77,15 @@ public class MemberVo {
 	public void setSessionage(Timestamp sessionage) {
 		this.sessionage = sessionage;
 	}
+	
 	@Override
 	public String toString() {
 		return "MemberVo [userid=" + userid + ", password=" + password + ", name=" + name + ", email=" + email
 				+ ", userimg=" + userimg + ", isadmin=" + isadmin + ", registerDate=" + registerDate + ", sessionid="
-				+ sessionid + ", sessionage=" + sessionage + "]";
+				+ sessionid + ", sessionage=" + sessionage + ", phone=" + phone + "]";
 	}
 	public MemberVo(String userid, String password, String name, String email, String userimg, String isadmin,
-			Timestamp registerDate, String sessionid, Timestamp sessionage) {
+			Timestamp registerDate, String sessionid, Timestamp sessionage, String phone) {
 		super();
 		this.userid = userid;
 		this.password = password;
@@ -88,6 +96,7 @@ public class MemberVo {
 		this.registerDate = registerDate;
 		this.sessionid = sessionid;
 		this.sessionage = sessionage;
+		this.phone = phone;
 	}
 	public MemberVo() {
 		super();

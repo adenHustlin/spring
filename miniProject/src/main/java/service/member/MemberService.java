@@ -20,4 +20,13 @@ public interface MemberService {
 	void keepLogin(LoginDTO dto)throws Exception;
 	
 	MemberVo checkLoginBefore(String value)throws Exception;
+	
+	int memberRegister(MemberVo vo)throws Exception;
+
+	/**
+	 * @date:2021. 9. 13.
+	 * @param parameter
+	 * return value:
+	 */
+	public MemberVo useridConfirm(String userid);
 }

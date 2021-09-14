@@ -11,6 +11,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
 	integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 
 <title>Insert title here</title>
 <script type="text/javascript">
@@ -64,10 +66,10 @@
 
 			success : function(data) { // 통신 성공시 수행될 콜백 함수
 				if (data == 'success') {
-					alert("댓글등록완료");
+					
 				}
 				viewAllReplies();
-				$("")
+				
 
 			},
 			error : function() { // 통신 실패시 수행될 콜백 함수
@@ -84,15 +86,21 @@
 			}
 		$.each(data,function(i, e) {
 			let regDate = new Date(e.registerDate);
-			let today= new Date();
+			let replyTime=moment(regDate).fromNow()
+		
+			/* if(timeGap<60){
+				replyTime=timeGap+"mins ago"
+			}else{
+				replyTime=moment(regDate).format('YYYY MM DD')
+			} */
 			
-			console.log(timeGap);
+			
 		
 		if (e.isSecret == 'Y') {
 			if (e.replyer == "${loginMember.userid}"|| "${loginMember.userid}" == "${board.writer}") {
-			output+='<div class="list-group-item list-group-item-action" aria-current="true"><div class="d-flex w-100 justify-content-between"><h2 >'+e.replyer+'</h2><small>'+e.registerDate+'</small></div><p class="mb-1">'+e.contents+'</p><a href="#"><img src="../resources/imgs/delete.png"></a>'
+			output+='<div class="list-group-item list-group-item-action" aria-current="true"><div class="d-flex w-100 justify-content-between"><h2 >'+e.replyer+'</h2><small>'+replyTime+'</small></div><p class="mb-1">'+e.contents+'</p><a href="#" onclick="deleteReply('+e.no+')"><img src="../resources/imgs/delete.png"></a>'
 				if(e.replyer == "${loginMember.userid}"){
-					output+='<a href="#"><img src="../resources/imgs/edit.png"></a>';
+					output+='<a href="#" onclick="modifyReply('+e.no+','+e.bno+','+e.contents+')"><img src="../resources/imgs/edit.png"></a>';
 				}
 									
 				} else {
@@ -100,11 +108,11 @@
 				}
 				output+='</div>'
 		} else {
-			output+='<div class="list-group-item list-group-item-action" aria-current="true"><div class="d-flex w-100 justify-content-between"><h2 >'+e.replyer+'</h2><small>'+e.registerDate+'</small></div><p class="mb-1">'+e.contents+'</p><a href="#">'
+			output+='<div class="list-group-item list-group-item-action" aria-current="true"><div class="d-flex w-100 justify-content-between"><h2 >'+e.replyer+'</h2><small>'+replyTime+'</small></div><p class="mb-1">'+e.contents+'</p><a href="#">'
 				if (e.replyer == "${loginMember.userid}"|| "${loginMember.userid}" == "${board.writer}"){
-					output+='<a href="#"><img src="../resources/imgs/delete.png"></a>';
+					output+='<a href="#" onclick="deleteReply('+e.no+')"><img src="../resources/imgs/delete.png"></a>';
 					if (e.replyer == "${loginMember.userid}"){
-						output+='<a href="#"><img src="../resources/imgs/edit.png"></a>';
+						output+='<a href="#" onclick="modifyReply('+e.no+','+e.bno+','+e.contents+')"><img src="../resources/imgs/edit.png"></a>';
 					}
 				}
 				output+='</div>';
@@ -114,24 +122,21 @@
 		$("#replyList").empty();
 		$("#replyList").html(output);
 	} 
-	/* function modifyReply(td) {
+	 function modifyReply(rno,bno,contents) {
 
-		let prevReply = $(td).parent().parent().find("td:eq(1)").css
+		let prevReply = $(this).parent().parent().find("td:eq(1)").css
 		console.log(prevReply);
 		$(td)
 				.parent()
 				.parent()
 				.find("td:eq(1)")
 				.html(
-						"<td><textarea rows='6' cols='150' value='this.contents'></textarea><button>edit</button><button onclick='modifyReplyCancel(this);'>cancel</button></td>");
+						"<textarea rows='6' cols='150'></textarea><button>edit</button><button onclick='modifyReplyCancel(this);'>cancel</button>");
 
-	} */
-	/* function modifyReplyCancel(td, prevReply) {
-		console.log(prevReply)
-		$(td).parent().parent().find("td:eq(1)").html(
-				"<td>" + prevReply + "</td>")
-
-	} */
+	} 
+	 function modifyReplyCancel() {
+		 viewAllReplies();
+	} 
 </script>
 </head>
 <body>
@@ -185,7 +190,7 @@
 		<c:if test="${loginMember!=null }">
 			<div class="list-group">
 				<div class="input-group">
-					<textarea class="form-control" aria-label="With textarea" id="replyContents"></textarea>
+					<textarea class="form-control" aria-label="With textarea" id="replyContents" ></textarea>
 					<button type="button" class="btn btn-outline-secondary" onclick="addReply()">send</button>
 					<input class="form-check-input" type="checkbox" value="" id="isSecret"> <label class="form-check-label"> Secret
 						Comment</label>
