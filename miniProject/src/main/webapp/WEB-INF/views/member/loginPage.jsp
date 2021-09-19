@@ -9,7 +9,7 @@
 <meta http-equiv="Cache-Control" content="No-Cache">
 <meta http-equiv="Pragma" content="No-Cache">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="google-signin-client_id" content="496061673952-gifocktg13nj7qq8kf7r8vhcev3g9o01.apps.googleusercontent.com">
+<meta name="google-signin-client_id" content="api key">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
