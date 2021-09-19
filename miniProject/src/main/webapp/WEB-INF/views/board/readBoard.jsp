@@ -104,7 +104,7 @@
 				}
 									
 				} else {
-					output += '<div class="list-group-item list-group-item-action active" aria-current="true"><img src="../resources/imgs/lock.png"></div>';
+					output += '<div class="list-group-item list-group-item-action" aria-current="true">secret comment<img src="../resources/imgs/lock.png"></div>';
 				}
 				output+='</div>'
 		} else {

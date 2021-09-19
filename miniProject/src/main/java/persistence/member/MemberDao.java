@@ -4,6 +4,7 @@
 package persistence.member;
 
 import domain.LoginDTO;
+import domain.MemberDetailsDto;
 import domain.MemberVo;
 
 /**
@@ -15,12 +16,12 @@ import domain.MemberVo;
  */
 public interface MemberDao {
 	//로그인처리
-	public MemberVo login(LoginDTO dto)throws Exception;
+	public MemberDetailsDto login(String userid)throws Exception;
 	//자동로그인
 	void keepLogin(LoginDTO dto)throws Exception;
 	MemberVo checkUserWithSessionKey(String value) throws Exception;
 	
-	public int memberRegister(MemberVo vo);
+	public int memberRegister(MemberDetailsDto dto);
 	
-	public MemberVo useridConfirm(String userid);
+	public MemberDetailsDto getMemberDetails(String userid);
 }

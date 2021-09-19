@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,35 +36,25 @@ public class HomeController {
 		return "index";
 	}
 
-	@RequestMapping("/memberRegister")
-	public String toRegisterPage() {
-		return "/member/memberRegister";
-	}
-
-//로그인페이지이동 겟방식임
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginPage() {
-
-		return "/member/loginPage";
-	}
-
-	// 로그인 처리하는 부분
-//	@RequestMapping(value = "/login", method = RequestMethod.POST)
-//	public void loginPost(HttpSession session, LoginDTO dto, HttpServletRequest request, Model model,
-//			HttpServletResponse response) throws Exception {
-//
-//		MemberVo vo = service.login(dto);
-//
-//		if (vo == null) {// 로그인 오류
-//			return;
-//		}
-//		session.setAttribute("loginMember", vo);
-//
-//	}
-
 	@RequestMapping("/accessDeniedPage")
 	public String accessDeniedPage() {
 		return "accessDeniedPage";
 	}
 
+//로그인페이지이동 겟방식임
+//	@RequestMapping(value = "/login", method = RequestMethod.GET)
+//	public String loginPage(Authentication authentication) {
+//		if(authentication!=null) {
+//			return "/";
+//		}
+//		return "/member/loginPage";
+//	}
+
+	// 로그인 처리하는 부분
+	@RequestMapping("/welcomePage")
+	public String welcomeString() {
+		return "welcomePage";
+	}
+
+	
 }

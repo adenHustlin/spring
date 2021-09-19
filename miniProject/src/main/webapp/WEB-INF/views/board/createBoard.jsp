@@ -18,7 +18,7 @@
 <script>
 	$(function() {
 		console.log(CKEDITOR)
-		 $(".fileDrop").on("dropenter dragover", function(evt) { // 드롭엔터는 파일을 놓을때 발생되는 이벤트.. dragover는 드롭할때
+		$(".fileDrop").on("dropenter dragover", function(evt) { // 드롭엔터는 파일을 놓을때 발생되는 이벤트.. dragover는 드롭할때
 			evt.preventDefault();
 		});
 
@@ -95,24 +95,19 @@
 										}
 
 									});
-						}); 
-					
+						});
 
-					      let ckeditor_config = {
+		let ckeditor_config = {
 
-					      resize_enaleb : true,
-					    height:800,
-					      enterMode : CKEDITOR.ENTER_BR,
+			resize_enaleb : true,
+			height : 800,
+			enterMode : CKEDITOR.ENTER_BR,
 
-					      shiftEnterMode : CKEDITOR.ENTER_P,
+			shiftEnterMode : CKEDITOR.ENTER_P,
 
-					      filebrowserUploadUrl : "/board/imageUpload"
+			filebrowserUploadUrl : '<c:url value="/board/imageUpload" />?${_csrf.parameterName}=${_csrf.token}'
 
-					      };
-
-				
-
-
+		};
 
 		CKEDITOR.replace('content', ckeditor_config);
 	});
@@ -146,13 +141,11 @@
 
 		});
 	} */
-	
-	
 
- function openArea() {
+	function openArea() {
 		$(".fileDrop").show();
 
-	}  
+	}
 </script>
 </head>
 <style>
@@ -179,18 +172,17 @@
 	<jsp:include page="../navBar.jsp"></jsp:include>
 
 	<div class="container">
-		<form action="createBoard" method="post">
+		<form action="/board/createBoard" method="post">
 			<div class="mb-3">
-				<label class="form-label">title</label> <input type="text" class="form-control" id="title" name="title"
-					placeholder="Enter Title">
+				<label class="form-label">title</label> <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title">
 			</div>
-			<input type="text" name="writer" value="${loginMember.userid }" style="display:none;">
+			<input type="text" name="writer" value="${loginMember.userid }" style="display: none;">
 			<textarea id="content" name="content"></textarea>
-			
-			<button type="submit"  class="btn btn-outline-secondary" >Write</button>
+			<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}" />
+			<button type="submit" class="btn btn-outline-secondary">Write</button>
 		</form>
 
-	 <%-- <h2>글 쓰기 페이지</h2>
+		<%-- <h2>글 쓰기 페이지</h2>
 		<form action="createBoard" method="post">
 			<div class="form-group">
 				<label for="title">제목:</label> <input type="text" class="form-control" id="title" name="title"> <span id="titleError" class="error"></span>

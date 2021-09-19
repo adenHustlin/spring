@@ -3,8 +3,8 @@
 
 <mapper namespace="com.miniProj.mapper.memberMapper">
 
-	<select id="login" resultType="domain.MemberVo">
-  		select * from member where userid=#{userid} and password=sha1(md5(#{password}))
+	<select id="login" resultType="domain.MemberDetailsDto">
+  		select * from member where userid=#{userid}
   	</select>
 	<update id="keepLogin">
 	update member set sessionid=#{sessionid}, sessionage=#{sessionage} where userid=#{userid}
@@ -15,7 +15,7 @@
 	<insert id="memberRegister">
 	insert into member(userid,password,name,email,phone) values(#{userid},sha1(md5(#{password})),#{name},#{email},#{phone})
 	</insert>
-	<select id="useridConfirm" resultType="domain.MemberVo">
+	<select id="getMemberDetails" resultType="domain.MemberDetailsDto">
 	select * from member where userid=#{userid}
 	</select>
 </mapper>

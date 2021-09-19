@@ -3,12 +3,15 @@
  */
 package persistence.member;
 
+import java.lang.reflect.Member;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import domain.LoginDTO;
+import domain.MemberDetailsDto;
 import domain.MemberVo;
 
 /**
@@ -24,9 +27,9 @@ public class MemberDaoImpl implements MemberDao {
 	private SqlSession ses;
 	private static String ns="com.miniProj.mapper.memberMapper";
 	@Override
-	public MemberVo login(LoginDTO dto) throws Exception {
+	public MemberDetailsDto login(String userid) throws Exception {
 		
-		return ses.selectOne(ns+".login",dto);
+		return ses.selectOne(ns+".login",userid);
 	}
 	@Override
 	public void keepLogin(LoginDTO dto) throws Exception {
@@ -39,14 +42,14 @@ public class MemberDaoImpl implements MemberDao {
 		return ses.selectOne(ns+".checkUserWithSessionKey",value);
 	}
 	@Override
-	public int memberRegister(MemberVo vo) {
+	public int memberRegister(MemberDetailsDto dto) {
 		// TODO Auto-generated method stub
-		return ses.insert(ns+".memberRegister",vo);
+		return ses.insert(ns+".memberRegister",dto);
 	}
 	@Override
-	public MemberVo useridConfirm(String userid) {
+	public MemberDetailsDto getMemberDetails(String userid) {
 	
-		return ses.selectOne(ns+".useridConfirm",userid);
+		return ses.selectOne(ns+".getMemberDetails",userid);
 	}
 
 }

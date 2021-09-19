@@ -1,48 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans
-	xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-                                 http://www.springframework.org/schema/beans/spring-beans.xsd
-                                 http://www.springframework.org/schema/security
-                                 http://www.springframework.org/schema/security/spring-security.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:s="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-
-
-
-	<http auto-config="true" use-expressions="true">
-
-		<intercept-url pattern="/" access="permitAll" />
-		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/member/**"
-			access="hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')" />
-		<intercept-url pattern="/admin/**"
+	<s:http auto-config="true">
+		<s:csrf disabled="true" />
+		<s:headers>
+			<s:frame-options policy="SAMEORIGIN"></s:frame-options>
+		</s:headers>
+		<s:intercept-url pattern="/" access="permitAll" />
+		<s:intercept-url pattern="/security/**"
+			access="isAnonymous()" />
+		<s:intercept-url pattern="/admin/**"
 			access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/**"
+		<s:intercept-url pattern="/member/**"
+			access="hasRole('ROLE_MEMBER')" />
+		<s:intercept-url pattern="/board/**"
 			access="hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')" />
 
-		<form-login username-parameter="userid"
-			password-parameter="password" login-processing-url="/login"
-			login-page="/login" default-target-url="/" />
-		<access-denied-handler
+
+		<s:form-login login-page="/security/loginPage"
+			username-parameter="userid" login-processing-url="/security/login"
+			authentication-failure-handler-ref="loginFailureHandler"
+			authentication-success-handler-ref="loginSuccessHandler" />
+		<s:logout invalidate-session="true" logout-success-url="/"
+			logout-url="/security/logout"
+			delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />
+		<s:access-denied-handler
 			error-page="/accessDeniedPage" />
-	</http>
+		<s:remember-me key="loginMember"
+			token-validity-seconds="432000"
 
+			authentication-success-handler-ref="loginSuccessHandler"
+			remember-me-parameter="remember-me" remember-me-cookie="remember-me" />
+	</s:http>
 
+	<context:component-scan
+		base-package="persistence.security" />
 
+	<bean id="loginFailureHandler"
+		class="service.security.LoginFailureHandler">
+	</bean>
+	<bean id="loginSuccessHandler"
+		class="service.security.LoginSuccessHandler"></bean>
+	<!-- <bean id="UserLoginRememberMeService" class="service.security.UserLoginRememberMeService"> 
+		<constructor-arg name="key" value="qwe" /> <constructor-arg name="userDetailsService" 
+		ref="MemberLoginService" /> </bean> -->
 
-	<authentication-manager>
-		<authentication-provider>
-			<user-service>
-				<user name="admin" password="{noop}admin"
-					authorities="ROLE_ADMIN" />
-				<user name="member" password="{noop}member"
-					authorities="ROLE_MEMBER" />
-			</user-service>
-		</authentication-provider>
-	</authentication-manager>
+	<s:authentication-manager>
+		<!-- <security:authentication-provider> <security:jdbc-user-service data-source-ref="dataSource" 
+			users-by-username-query=" SELECT userid , password , enabled FROM member 
+			WHERE userid = ?" authorities-by-username-query=" SELECT userid, authority 
+			FROM member WHERE userid = ?" /> </security:authentication-provider> -->
+		<s:authentication-provider
+			ref="authenticationProvider" />
+		<s:authentication-provider
+			user-service-ref="MemberLoginService" />
+		
+	</s:authentication-manager>
+	<!-- <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" 
+		/> -->
 
-
-
-</beans:beans> 
+	<bean id="MemberLoginService"
+		class="service.security.SecurityService" />
+	<bean id="authenticationProvider"
+		class="service.security.AuthenticationProvider" />
+</beans>

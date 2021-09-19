@@ -4,6 +4,7 @@ package domain;
 import java.sql.Date;
 
 import com.google.protobuf.Timestamp;
+import com.sun.mail.handlers.text_html;
 
 
 public class MemberVo {
@@ -12,17 +13,16 @@ public class MemberVo {
 	private String name;
 	private String email;
 	private String userimg;
-	private String isadmin;
+	private String authority;
 	private Timestamp registerDate;
-	private String sessionid;
-	private Timestamp sessionage;
 	private String phone;
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+	private int enabled;
+	private int failureCount;
+	private String gender;
+	private String socialaccount;
+	private String birth;
+	
+	
 	public String getUserid() {
 		return userid;
 	}
@@ -53,11 +53,11 @@ public class MemberVo {
 	public void setUserimg(String userimg) {
 		this.userimg = userimg;
 	}
-	public String getIsadmin() {
-		return isadmin;
+	public String getAuthority() {
+		return authority;
 	}
-	public void setIsadmin(String isadmin) {
-		this.isadmin = isadmin;
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 	public Timestamp getRegisterDate() {
 		return registerDate;
@@ -65,38 +65,66 @@ public class MemberVo {
 	public void setRegisterDate(Timestamp registerDate) {
 		this.registerDate = registerDate;
 	}
-	public String getSessionid() {
-		return sessionid;
+	public String getPhone() {
+		return phone;
 	}
-	public void setSessionid(String sessionid) {
-		this.sessionid = sessionid;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public Timestamp getSessionage() {
-		return sessionage;
+	public int getEnabled() {
+		return enabled;
 	}
-	public void setSessionage(Timestamp sessionage) {
-		this.sessionage = sessionage;
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
 	}
-	
-	@Override
-	public String toString() {
-		return "MemberVo [userid=" + userid + ", password=" + password + ", name=" + name + ", email=" + email
-				+ ", userimg=" + userimg + ", isadmin=" + isadmin + ", registerDate=" + registerDate + ", sessionid="
-				+ sessionid + ", sessionage=" + sessionage + ", phone=" + phone + "]";
+	public int getFailureCount() {
+		return failureCount;
 	}
-	public MemberVo(String userid, String password, String name, String email, String userimg, String isadmin,
-			Timestamp registerDate, String sessionid, Timestamp sessionage, String phone) {
+	public void setFailureCount(int failureCount) {
+		this.failureCount = failureCount;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getSocialaccount() {
+		return socialaccount;
+	}
+	public void setSocialaccount(String socialaccount) {
+		this.socialaccount = socialaccount;
+	}
+	public String getBirth() {
+		return birth;
+	}
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+	public MemberVo(String userid, String password, String name, String email, String userimg, String authority,
+			Timestamp registerDate, String phone, int enabled, int failureCount, String gender, String socialaccount,
+			String birth) {
 		super();
 		this.userid = userid;
 		this.password = password;
 		this.name = name;
 		this.email = email;
 		this.userimg = userimg;
-		this.isadmin = isadmin;
+		this.authority = authority;
 		this.registerDate = registerDate;
-		this.sessionid = sessionid;
-		this.sessionage = sessionage;
 		this.phone = phone;
+		this.enabled = enabled;
+		this.failureCount = failureCount;
+		this.gender = gender;
+		this.socialaccount = socialaccount;
+		this.birth = birth;
+	}
+	@Override
+	public String toString() {
+		return "MemberVo [userid=" + userid + ", password=" + password + ", name=" + name + ", email=" + email
+				+ ", userimg=" + userimg + ", authority=" + authority + ", registerDate=" + registerDate + ", phone="
+				+ phone + ", enabled=" + enabled + ", failureCount=" + failureCount + ", gender=" + gender
+				+ ", socialaccount=" + socialaccount + ", birth=" + birth + "]";
 	}
 	public MemberVo() {
 		super();

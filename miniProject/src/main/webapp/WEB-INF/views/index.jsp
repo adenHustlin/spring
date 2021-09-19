@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,18 +18,20 @@
 </head>
 <body>
 	<%
-	response.setHeader("Pragma", "no-cache"); 
+	response.setHeader("Pragma", "no-cache");
 	response.setHeader("Cache-Control", "private, no-store, must-revalidate");
 	%>
 	<%-- <c:import url="navBar.jsp"></c:import>  --%>
 	<%@include file="navBar.jsp"%>
-
+	${sessionScope }
+	<br/>
+	<h2>userid=${sessionScope.loginMember.userid }</h2>
 	<h2>main</h2>
-
-	<a href='<c:url value="/member/memberPage"/>'>MEMBER</a>
-	<a href='<c:url value="/admin/adminPage"/>'>ADMIN</a>
-
-
+	
+	<sec:authorize access="isAnonymous()">
+		<p>not logined</p>
+	</sec:authorize>
+	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>

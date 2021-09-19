@@ -27,6 +27,9 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!-- security filter -->
+	<listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -35,6 +38,21 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<!--editor 이미지업로드시 업로드경로 파일 접근 권한 -->
+	<!--<filter>
+		<filter-name>CKEditor</filter-name>
+		<filter-class>egovframework.com.utl.wed.filter.CkFilter</filter-class>
+		<init-param>
+			<param-name>properties</param-name>
+			<param-value>egovframework/egovProps/ck.properties</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CKEditor</filter-name>
+		<url-pattern>/board/imageUpload</url-pattern>
+	</filter-mapping>
+-->
+
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

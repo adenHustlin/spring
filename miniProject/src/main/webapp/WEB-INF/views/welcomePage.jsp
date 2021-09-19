@@ -21,7 +21,7 @@
 <%-- <c:import url="navBar.jsp"></c:import>  --%>
  <%@include file="navBar.jsp"%> 
 	
-      <div class="position-absolute top-50 start-50 translate-middle"><h2  class="text-secondary">Welcome!<br>${sessionScope.loginMember.name}</h2></div>
+      <div class="position-absolute top-50 start-50 translate-middle"><h2  class="text-secondary">Welcome!<br>${sessionScope.loginMember.name}</h2><a href="/security/loginPage">to loginpage</a></div>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
 </html>

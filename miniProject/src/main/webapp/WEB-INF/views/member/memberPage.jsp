@@ -19,7 +19,7 @@
 	response.setHeader("Cache-Control", "private, no-store, must-revalidate");
 	%>
 	<%-- <c:import url="navBar.jsp"></c:import>  --%>
-	<%@include file="navBar.jsp"%>
+	<%@include file="../navBar.jsp"%>
 
 	<h2>member Page</h2>
 

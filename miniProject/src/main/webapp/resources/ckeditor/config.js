@@ -38,6 +38,8 @@ CKEDITOR.editorConfig = function( config ) {
 	
 	config.filebrowserUploadMethod = 'form';
 	config.extraPlugins = 'uploadimage';
-config.uploadUrl = '/board/imageUpload.do';
-config.imageUploadUrl = '/board/imageUpload.do';
+config.uploadUrl = '/board/imageUpload';
+config.imageUploadUrl = '/board/imageUpload';
+config.filebrowserUploadUrl ='/board/imageUpload';
+
 };

@@ -3,7 +3,11 @@
  */
 package service.member;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import domain.LoginDTO;
+import domain.MemberDetailsDto;
 import domain.MemberVo;
 
 /**
@@ -14,19 +18,21 @@ import domain.MemberVo;
  * description:
  */
 public interface MemberService {
-
-	public MemberVo login(LoginDTO dto)throws Exception;
-	
+//
+//	public MemberVo login(MemberDetailsDto dto)throws Exception;
+//	
 	void keepLogin(LoginDTO dto)throws Exception;
 	
 	MemberVo checkLoginBefore(String value)throws Exception;
 	
-	int memberRegister(MemberVo vo)throws Exception;
+	int memberRegister(MemberDetailsDto dto)throws Exception;
 
 	/**
-	 * @date:2021. 9. 13.
-	 * @param parameter
+	 * @date:2021. 9. 16.
+	 * @param userid
+	 * @return
 	 * return value:
 	 */
-	public MemberVo useridConfirm(String userid);
+	public MemberDetailsDto useridConfirm(String userid);
+
 }

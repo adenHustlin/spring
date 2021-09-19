@@ -15,7 +15,7 @@
 			console.log("nouser")
 			$("#userProfile")
 					.html(
-							'<a href="/login" class="d-block link-secondary text-decoration-none  "><img src="../resources/imgs/login.png"/>Login</a>')
+							'<a href="/security/loginPage" class="d-block link-secondary text-decoration-none  "><img src="../resources/imgs/login.png"/>Login</a>')
 
 		}
 		let pathname = window.location.pathname;
@@ -27,8 +27,10 @@
 			$("#boardA").attr('class', 'nav-link  active')
 		}
 
+		$("#logout").click(function() {
+			$("#logoutForm").submit();
+		})
 	})
-	
 </script>
 
 <body>
@@ -43,7 +45,10 @@
 				<li><a id="homeA" class="nav-link link-secondary" aria-current="page" href="/">Home</a></li>
 				<li><a id="boardA" class="nav-link link-secondary" aria-current="page" href="/board/listAll?pageNo=1">Board</a></li>
 			</ul>
+			<form action="/security/logout" method="POST" id="logoutForm" style="display: none">
 
+				<button type="submit">LOGOUT</button>
+			</form>
 
 			<div class="d-flex align-items-center">
 				<select class="form-select" aria-label="Default select example" style="width: 500px;" id="searchType">
@@ -60,9 +65,7 @@
 					<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" style="">
 						<li><a class="dropdown-item link-secondary" href="#"><img src="../resources/imgs/userSettings.png">&nbsp;&nbsp;User Profile</a></li>
 						<li><hr class="dropdown-divider"></li>
-						<li><form action="/member/logout" method="POST">
-								<input type="submit" value="LOGOUT" /> <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							</form> <!-- <a class="dropdown-item link-secondary" href="/member/logout"><img src="../resources/imgs/logout.png">&nbsp;&nbsp;Sign Out</a> --></li>
+						<li><a class="dropdown-item link-secondary" href="#" id="logout"><img src="../resources/imgs/logout.png">&nbsp;&nbsp;Sign Out</a></li>
 					</ul>
 				</div>
 			</div>

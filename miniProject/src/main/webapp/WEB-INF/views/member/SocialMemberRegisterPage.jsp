@@ -20,7 +20,7 @@
 		if(userid.search( /\s/g)==-1 && userid.length<12 &&userid.length>6){
 			
 			$.ajax({
-				url : "member/useridConfirm/"+userid,
+				url : "/security/useridConfirm/"+userid,
 				
 				type : "GET",
 				success : function(data) {
@@ -49,23 +49,23 @@
 </script>
 <body>
 <jsp:include page="../navBar.jsp"></jsp:include>
-	<h2 style="text-align: center">login</h2>
+	<h2 style="text-align: center">Social Account Register</h2>
 	 <div class="container">
-		<form action="member/memberRegister" method="post">
+		<form action="/security/memberRegister" method="post">
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label" >id</label> <input type="text" class="form-control"
-					id="userid" name="userid" placeholder="Enter ID"  required>
+					id="userid" name="userid" placeholder="Enter ID" value="${userid}" readonly>
 					<span id="idError"></span>
 			</div>
 
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">password</label> <input type="password" class="form-control"
-					id="password" name="password" placeholder="Enter password" required>
+					id="password" name="password" placeholder="Enter password" value="${password}" readonly>
 					<span id="pwdError"></span>
 			</div>
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">confirm password</label> <input type="password" class="form-control"
-					id="Cpassword" name="Cpassword" placeholder="confirm password" required>
+					id="Cpassword" name="Cpassword" placeholder="confirm password" value="${password}" readonly>
 					<span id="pwdError2"></span>
 			</div>
 			<div class="mb-3">
@@ -75,7 +75,7 @@
 			</div>
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">email</label> <input type="email" class="form-control"
-					id="email" name="email" placeholder="Enter email" required>
+					id="email" name="email" value="${userid}" readonly>
 					<span id="emailError"></span>
 			</div>
 			<div class="mb-3">
@@ -83,6 +83,8 @@
 					id="phone" name="phone" placeholder="Enter phone" required>
 					<span id="phoneError"></span>
 			</div>
+			<input type="text" class="form-control"
+					id="socialAccount" name="socialAccount" style="display: none" value="Y">
 			<button type="submit" class="btn btn-outline-secondary">register</button>
 
 		</form>

@@ -18,6 +18,7 @@ import domain.BoardVo;
 import domain.MemberPointVo;
 import domain.PagingInfoDTO;
 import persistence.board.BoardDAO;
+import service.board.BoardService;
 
 
 @Service
