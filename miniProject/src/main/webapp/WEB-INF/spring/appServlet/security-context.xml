@@ -19,7 +19,7 @@
 			access="hasRole('ROLE_ADMIN')" />
 		<s:intercept-url pattern="/member/**"
 			access="hasRole('ROLE_MEMBER')" />
-		<s:intercept-url pattern="/board/**"
+		<s:intercept-url pattern="/cs/**"
 			access="hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')" />
 
 
@@ -40,13 +40,13 @@
 	</s:http>
 
 	<context:component-scan
-		base-package="persistence.security" />
+		base-package="com.gootdate.security.dao.lhw" />
 
 	<bean id="loginFailureHandler"
-		class="service.security.LoginFailureHandler">
+		class="com.gootdate.security.service.lhw.LoginFailureHandler">
 	</bean>
 	<bean id="loginSuccessHandler"
-		class="service.security.LoginSuccessHandler"></bean>
+		class="com.gootdate.security.service.lhw.LoginSuccessHandler"></bean>
 	<!-- <bean id="UserLoginRememberMeService" class="service.security.UserLoginRememberMeService"> 
 		<constructor-arg name="key" value="qwe" /> <constructor-arg name="userDetailsService" 
 		ref="MemberLoginService" /> </bean> -->
@@ -66,7 +66,7 @@
 		/> -->
 
 	<bean id="MemberLoginService"
-		class="service.security.SecurityService" />
+		class="com.gootdate.security.service.lhw.SecurityService" />
 	<bean id="authenticationProvider"
-		class="service.security.AuthenticationProvider" />
+		class="com.gootdate.security.service.lhw.AuthenticationProvider" />
 </beans>

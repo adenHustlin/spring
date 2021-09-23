@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gootdate.mapper.securityMapper">
+	<select id="getMemberDetails" resultType="com.gootdate.domain.MemberDetailsDto">
+		
+            SELECT
+                *
+            FROM
+                member
+            WHERE
+                userid=#{userid}
+   
+	</select>
+	<insert id="memberRegister">
+	insert into member(userid,password,name,email,phone,enabled,gender,birth,emailConfirm) values(#{userid},#{password},#{name},#{email},#{phone},#{enabled},#{gender},#{birth},#{emailConfirm})
+	</insert>
+	<update id="updateDisabled">UPDATE
+                member
+            SET
+                enabled=0
+            WHERE
+                userid = #{userid}
+</update>
+	<select id="checkFailureCount" resultType="Integer">
+		select failure_cnt from member where userid=#{userid}
+	</select>
+	<update id="updateFailureCount">
+	update member set failure_cnt=failure_cnt+1 where userid=#{userid}
+	</update>
+	<update id="resetresetFailureCnt">
+	update member set failure_cnt=0 where userid=#{userid}
+	</update>
+	<select id="getMemberVo" resultType="com.gootdate.domain.MemberVo" parameterType="map">
+		select*from member where ${searchType}=#{keyword}
+		</select>
+	<update id="emailConfirm">
+	update member set enabled=1 where email=#{email}
+	</update>
+	<select id="" resultType="com.gootdate.domain.MemberVo">
+		select*from member where userid=#{email}
+		</select>
+</mapper>

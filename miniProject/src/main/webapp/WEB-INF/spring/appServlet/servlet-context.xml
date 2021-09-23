@@ -11,45 +11,34 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
 
-	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- 어노테이션 활성화 -->
+<context:annotation-config/>
 	<annotation-driven />
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
-		up static resources in the ${webappRoot}/resources directory -->
+	<!-- 매핑 주소랑 실제 경로랑 엮어서 등록 -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/uploads/**"
 		location="/resources/uploads/" />
+	<resources location="/resources/template/"
+		mapping="/template/**" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
-		in the /WEB-INF/views directory -->
+	<!-- 컨트롤러에서 스트링 리턴시 앞 뒤 붙힐거 -->
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 		<beans:property name="contentType"
 			value="text/html; charset=UTF-8" />
-
+		<!-- 파일업로드 관련 설정 -->
 	</beans:bean>
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="200000000"></beans:property>
 		<beans:property name="uploadTempDir" value="/temp"></beans:property><!--임시디렉터리 -->
 	</beans:bean>
+
+<context:component-scan
+	base-package="com.gootdate*" />
 	
-	<context:component-scan
-		base-package="controller" />
-	<context:component-scan
-		base-package="com.miniproject.testcontroller" />
-	<!--interceptor beans -->
-	<!--<beans:bean id="LoginInterceptor" class="interceptor.LoginInterceptor"> 
-		</beans:bean> <beans:bean id="AuthenticationInterceptor" class="interceptor.AuthenticationInterceptor"> 
-		</beans:bean> <beans:bean id="KeepLoginInterceptor" class="interceptor.KeepLoginInterceptor"> 
-		</beans:bean> -->
-	<!--interceptor mapping -->
-	<!--<interceptors> <interceptor> <mapping path="/member/loginPost" /> <beans:ref 
-		bean="LoginInterceptor"/> </interceptor> <interceptor> <mapping path="/board/**/" 
-		/> <exclude-mapping path="/board/listAll" /> <beans:ref bean="AuthenticationInterceptor"/> 
-		</interceptor> <interceptor> <mapping path="/**/" /> <exclude-mapping path="/controller/interA" 
-		/> <beans:ref bean="KeepLoginInterceptor"/> </interceptor> </interceptors> -->
 
 </beans:beans>
