@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<%@include file="../navBar.jsp"%>
 
 <style>
 </style>
@@ -346,15 +347,7 @@ $(function(){
 		</div>  -->
 
 
-<<<<<<< HEAD
 	</div>
 	<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
 
 	<%@include file="../footer.jsp"%>
-=======
-<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-</body>
-</html>
->>>>>>> c87bb8be037e63cc7c890b8a27ab3ba36b16169f
