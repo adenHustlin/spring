@@ -52,8 +52,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		if (securityService.getMemberVo(STNK) != null) {// 계정있음 진짜 이클립스 개빡치게하네
 			MemberVo vo = securityService.getMemberVo(STNK);
 			System.out.println(vo.toString());
-			System.out.println(vo.getEmailConfirm().compareTo("N"));
-			if (vo.getEmailConfirm().compareTo("N") == 0) {// 이거에 3시간낭비함 개빡친다
+			if (vo.getEmailConfirm().compareTo("N") == 0) {
+				System.out.println("email not confirmed");
 				errormsg = "Please confirm your email '" + vo.getEmail() + "'";
 			} else {
 				if (securityService.checkFailureCount(userid) == 5) {

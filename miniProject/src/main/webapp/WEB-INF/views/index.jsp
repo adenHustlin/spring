@@ -9,6 +9,7 @@
 	<%-- <c:import url="navBar.jsp"></c:import>  --%>
 	<%@include file="navBar.jsp"%>
 	<!-- Hero Slider Begin -->
+	<div id="container">
 	<section class="hero-slider">
 		<div class="hero-items owl-carousel owl-loaded">
 			<div class="single-slider-item set-bg" data-setbg="/template/img/slider-1.jpg">
@@ -46,6 +47,7 @@
 			</div>
 		</div>
 	</section>
+	</div>
 	<!-- Hero Slider End -->
 	<%@include file="footer.jsp"%>
 

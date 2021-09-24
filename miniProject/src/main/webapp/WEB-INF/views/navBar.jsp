@@ -29,14 +29,15 @@
 
 </head>
 <style>
-.container {
-	min-height: 70%;
-	margin: auto;
+#container{
+min-height: 60%;
+margin:auto ;
+padding:0px 0px 300px 0px;
 }
 h2 {
 	text-align: center;
-	padding: 50px;
-}
+	padding:100px 0px 100px 0px;
+} 
 </style>
 <script type="text/javascript">
 	//jQuery.noConflict();
@@ -46,7 +47,7 @@ h2 {
 
 			$("#memberDiv")
 					.html(
-							'<a href="#">${sessionScope.loginMember.name}</a> <a href="#" id="logout" class="in">Sign out</a>')
+							'<a href="../member/memberPage" >${sessionScope.loginMember.name}</a> <a href="#" id="logout" class="in">Sign out</a>')
 			$("")
 		}
 

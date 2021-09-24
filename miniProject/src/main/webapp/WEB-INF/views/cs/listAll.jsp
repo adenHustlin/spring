@@ -13,7 +13,7 @@
 </style>
 <body>
 	<h2>Customer Service</h2>
-	<div class="container">
+	<div class="container" id="container">
 		<c:choose>
 			<c:when test="${listBoard != null }">
 				<table class="table table-hover">

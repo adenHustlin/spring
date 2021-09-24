@@ -21,7 +21,7 @@
                 enabled=0
             WHERE
                 userid = #{userid}
-</update>
+	</update>
 	<select id="checkFailureCount" resultType="Integer">
 		select failure_cnt from member where userid=#{userid}
 	</select>
@@ -33,11 +33,12 @@
 	</update>
 	<select id="getMemberVo" resultType="com.gootdate.domain.MemberVo" parameterType="map">
 		select*from member where ${searchType}=#{keyword}
-		</select>
+	</select>
 	<update id="emailConfirm">
-	update member set enabled=1 where email=#{email}
+	update member set enabled=1, emailConfirm="Y" where email=#{email}
 	</update>
-	<select id="" resultType="com.gootdate.domain.MemberVo">
-		select*from member where userid=#{email}
-		</select>
+
+	<update id="changePassword" parameterType="map">
+	update member set password=#{password},failure_cnt=0,enabled=1 where userid=#{userid} 
+	</update>
 </mapper>

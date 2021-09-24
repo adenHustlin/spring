@@ -6,9 +6,12 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,12 +31,18 @@ public class SecurityController {
 	@Inject
 	SecurityService service;
 
+	@Value("${google-api-id}")
+	String ApiKey;
+
+	@Value("${client-id}")
+	String ClientId;
+
 	// 회원가입 로그인 로그아웃 아이디중복확인
 	// loginPage move
 	@RequestMapping(value = "/loginPage", method = { RequestMethod.GET, RequestMethod.POST })
-
-	public String loginPage() {
-
+	public String loginPage(Model model) {
+		model.addAttribute("ApiKey",ApiKey);
+		model.addAttribute("ClientId",ClientId);
 		return "/member/loginPage";
 	}
 
@@ -75,14 +84,8 @@ public class SecurityController {
 			model.addAttribute("name", vo.getName());
 			model.addAttribute("message", "please confirm your email '" + vo.getEmail() + "' to enable your account");
 		}
-		service.sendMail(vo.getEmail(), "registerEmailConfirm");
-//		MimeMessage mail = mailSender.createMimeMessage();
-//		MimeMessageHelper mailHelper = new MimeMessageHelper(mail,true, "utf-8");
-//		mailHelper.setFrom("gootdate");	// 보내는 사람 셋팅
-//		mailHelper.setTo(vo.getEmail());		// 받는 사람 셋팅
-//		mailHelper.setSubject("GootDate Email Confirmation Mail");	// 제목 셋팅
-//		mailHelper.setText("<a href='http://localhost:8081/security/emailConfirm?email="+vo.getEmail()+"'>누르면 인증성공페이지로 이동합니다</a>",true);	// 내용 셋팅
-//		mailSender.send(mail);
+		service.sendMail(vo.getEmail(), "registrEmailConfirm");
+
 
 		return "welcomePage";
 	}
@@ -123,25 +126,49 @@ public class SecurityController {
 			randomNumber += Integer.toString(random.nextInt(10));
 		}
 
-		// service.sendMessage(toNumber, randomNumber);
+		service.sendMessage(toNumber, randomNumber);
 		return randomNumber;
 
 	}
 
-	// 
+	//
 	@ResponseBody
 	@RequestMapping(value = "/memberExistance", method = RequestMethod.GET)
-	public String FindUseridAndPasswordUserExistance(HttpServletRequest request)
-			throws Exception {//여기는 이메일이 디비에 있는지만확인하는걸로 일단합시다
+	public String FindUseridAndPasswordUserExistance(HttpServletRequest request) throws Exception {// 여기는 이메일이 디비에
+																									// 있는지만확인하는걸로 일단합시다
 		Map<String, String> STNK = new HashMap<>();
-		String param=request.getParameter("param");
-		STNK.put("searchType", "email");
-		STNK.put("keyword", param);
+		String keyword = request.getParameter("keyword");
+		String searchType=request.getParameter("searchType");
+		STNK.put("searchType", searchType);
+		STNK.put("keyword", keyword);
 		if (service.getMemberVo(STNK) == null) {
 			return "does not exist";
 		} else {
 			return "exists";
 		}
 
+	}
+	@ResponseBody
+	@RequestMapping("/sendUseridToEmail/{email}")
+	public String sendUseridToEmail(@PathVariable String email, Model model) throws MessagingException {
+
+		service.sendMail(email, "sendUseridToEmail");
+
+		return "success";
+	}
+	@ResponseBody
+	@RequestMapping("/changePassword/")
+	public String changePassword(HttpServletRequest request, Model model) throws MessagingException {
+		String Npwd=request.getParameter("Npwd");
+		String userid=request.getParameter("userid");
+		
+		
+		if(service.changePassword(userid,Npwd)==1) {
+			return "success";
+		}else {
+			return "fail";
+		}
+
+		
 	}
 }

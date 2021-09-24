@@ -58,9 +58,9 @@
 							if (e.isSecret == 'Y') {
 								if (e.replyer == "${loginMember.userid}"
 										|| "${loginMember.userid}" == "${board.writer}") {
-									output += '<div class="list-group-item list-group-item-action" aria-current="true" id="'+e.no+'"><div class="d-flex w-100 justify-content-between" ><h2>'
+									output += '<div class="list-group-item list-group-item-action" aria-current="true" id="'+e.no+'"><div class="d-flex w-100 justify-content-between" ><h3>'
 											+ e.replyer
-											+ '</h2><small>'
+											+ '</h3><small>'
 											+ replyTime
 											+ '</small></div><p class="mb-1">'
 											+ e.contents
@@ -74,9 +74,9 @@
 								}
 								output += '</div>'
 							} else {
-								output += '<div class="list-group-item list-group-item-action" aria-current="true" id="'+e.no+'"><div class="d-flex w-100 justify-content-between"><h2>'
+								output += '<div class="list-group-item list-group-item-action" aria-current="true" id="'+e.no+'"><div class="d-flex w-100 justify-content-between"><h3>'
 										+ e.replyer
-										+ '</h2><small>'
+										+ '</h3><small>'
 										+ replyTime
 										+ '</small></div><p class="mb-1">'
 										+ e.contents + '</p>'
@@ -216,7 +216,7 @@ padding: 50px
 </style>
 <body>
 
-	<div class="container">
+	<div class="container" id="container">
 
 		<figure>
 			<blockquote class="blockquote">

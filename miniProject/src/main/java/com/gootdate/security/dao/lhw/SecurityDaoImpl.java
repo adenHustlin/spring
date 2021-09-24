@@ -85,18 +85,11 @@ public class SecurityDaoImpl implements SecurityDao {
 		return ses.insert(ns + ".memberRegister", vo);
 	}
 
-	// 일반회원가입 이메일인증 enable 로 바꿈
+	// 일반회원가입 이메일인증 Y 로 바꿈
 	@Override
 	public int confrimEmail(String email) {
 		// TODO Auto-generated method stub
 		return ses.update(ns + ".emailConfirm", email);
-	}
-
-	// 아이디,비밀번호 잊어버림
-	@Override
-	public String getUseridWithEmail(String email) {
-
-		return ses.selectOne(ns + ".getUseridWithEmail", email);
 	}
 
 	// 있는이메일인지 확인
@@ -104,5 +97,10 @@ public class SecurityDaoImpl implements SecurityDao {
 	public MemberVo emailExistance(String email) {
 		// TODO Auto-generated method stub
 		return ses.selectOne(ns + ".emailExistance", email);
+	}
+
+	public int changePassword(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return ses.update(ns + ".changePassword", map);
 	}
 }

@@ -4,15 +4,17 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
 
 	<!-- 어노테이션 활성화 -->
-<context:annotation-config/>
+	<context:annotation-config />
 	<annotation-driven />
 
 	<!-- 매핑 주소랑 실제 경로랑 엮어서 등록 -->
@@ -36,9 +38,16 @@
 		<beans:property name="maxUploadSize" value="200000000"></beans:property>
 		<beans:property name="uploadTempDir" value="/temp"></beans:property><!--임시디렉터리 -->
 	</beans:bean>
-
-<context:component-scan
-	base-package="com.gootdate*" />
+	<!-- properties 파일 환경변수 이용하기 서블릿 콘텍스트에넣어야함 루트 안됨 -->
+	<beans:bean
+		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<beans:property name="location"
+			value="classpath:properties/Keys.properties" />
+		<beans:property name="fileEncoding" value="UTF-8" />
+	</beans:bean>
 	
 
+
+	<context:component-scan
+		base-package="com.gootdate*" />
 </beans:beans>

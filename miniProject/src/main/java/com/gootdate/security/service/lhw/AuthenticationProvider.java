@@ -40,6 +40,10 @@ public class AuthenticationProvider implements org.springframework.security.auth
 			throw new BadCredentialsException(userid);
 
 		}
+		if(member.getEmailconfirm().compareTo("N") == 0) {
+			throw new AuthenticationCredentialsNotFoundException(userid);
+			
+		}
 		if (!member.isEnabled() || !member.isCredentialsNonExpired()) {
 			throw new AuthenticationCredentialsNotFoundException(userid);
 		}

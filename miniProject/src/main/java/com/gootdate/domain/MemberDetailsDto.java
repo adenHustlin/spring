@@ -30,6 +30,15 @@ public class MemberDetailsDto implements UserDetails {
 	private boolean ENABLED;
 	private Timestamp registerDate;
 	private String phone;
+	private String emailconfirm;
+	
+	public String getEmailconfirm() {
+		return emailconfirm;
+	}
+
+	public void setEmailconfirm(String emailconfirm) {
+		this.emailconfirm = emailconfirm;
+	}
 
 	public String getUserid() {
 		return userid;

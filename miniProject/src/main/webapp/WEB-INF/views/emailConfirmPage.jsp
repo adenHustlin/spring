@@ -16,7 +16,7 @@
 <script type="text/javascript">
  	setTimeout(function() {
 		location.href="/security/loginPage"
-	}, 3000);
+	}, 5000);
 </script>
 <body>
 	<%
@@ -25,7 +25,7 @@
 	%>
 	<%-- <c:import url="navBar.jsp"></c:import>  --%>
 	<%@include file="navBar.jsp"%>
-	<div class="container">
+	<div class="container" id="container">
 
 		<h2 class="text-secondary" style="padding: 400px 0px 0px 0px; text-align: center">
 			Your Email&ensp;${email}&ensp;has been Confirmed!</h2>

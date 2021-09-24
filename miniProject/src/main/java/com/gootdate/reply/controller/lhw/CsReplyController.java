@@ -52,6 +52,7 @@ public class CsReplyController {
 		return result;
 
 	}
+
 //댓글목록
 	@RequestMapping(value = "/viewReplies/{bno}", method = RequestMethod.GET)
 	public List<ReplyVo> viewReply(@PathVariable("bno") String value, Model model, HttpServletRequest request)
@@ -62,16 +63,18 @@ public class CsReplyController {
 		return vo;
 
 	}
+
 //댓글수정
 	@PutMapping("/editReply")
 	public boolean editReply(@RequestBody ReplyVo vo) throws Exception {
 		System.out.println(vo.toString());
 		return service.modifyReply(vo);
-		
 
 	}
+
+	// 댓글삭제
 	@DeleteMapping("/deleteReply")
-	public boolean deleteReply(@RequestParam(value ="rno" ) int no) throws Exception {
+	public boolean deleteReply(@RequestParam(value = "rno") int no) throws Exception {
 		System.out.println(no);
 		return service.removeReply(no);
 	}

@@ -29,10 +29,8 @@ let Gflag=false;
 									$(this).css('border','1px solid #8A0808');
 									$("#useridI").hide()
 									$("#useridSpan").html("id exsists")
-									Uflag=false;
-								
-								} else {
-									
+									Uflag=false;					
+								} else {							
 									$("#useridSpan").html("Valid id")
 									$("#useridI").show()
 									$(this).css('border','1px solid #ced4da');
@@ -138,10 +136,28 @@ let Gflag=false;
 					let email=form.email.value
 					if(!email.includes(" ")){
 					if(emailRegExp.test(email)){
-						$(this).css('border','1px solid #ced4da');
-						$("#emailI").show()			
-						$("#emailSpan").html('valid email format');
-						Eflag=true;
+						$.ajax({
+							url:"../security/memberExistance",
+							data:{searchType:"email",keyword:email},
+							type : "GET",
+							context:this,
+							success:function(data){
+								
+								if(data=="exists"){
+									$(this).css('border','1px solid #8A0808');
+									$("#emailI").hide();
+									$("#emailSpan").html('this email already exists');
+									Eflag=false;
+								}
+								else{
+									$(this).css('border','1px solid #ced4da');
+									$("#emailI").show()			
+									$("#emailSpan").html('valid email');
+									Eflag=true;
+								}
+									
+							}
+						})
 					}else{
 						$(this).css('border','1px solid #8A0808');
 						$("#emailI").hide();
@@ -157,16 +173,37 @@ let Gflag=false;
 					}
 					console.log(Eflag)
 				})
+				//phone
 				 $("#phone").on("propertychange change keyup paste input",function(){
 					
 					let phone=form.phone.value
 					if(!phone.includes(" ")){
 					if(phone.length==11){
-						$(this).css('border','1px solid #ced4da');
-						$("#phoneI").show()
-						$("#phoneCbutton").show(300);
-						$("#phoneSpan").html('');
-						Pflag=true;
+						$.ajax({
+							url:"../security/memberExistance",
+							data:{searchType:"phone",keyword:phone},
+							type : "GET",
+							context:this,
+							success:function(data){
+								
+								if(data=="exists"){
+									$(this).css('border','1px solid #8A0808');
+									$("#phoneI").hide();
+									$("#phoneCbutton").hide(300);
+									$("#phoneSpan").html('this phone number alread exists');
+									Pflag=false;
+								}
+								else{
+									$(this).css('border','1px solid #ced4da');
+									$("#phoneI").show()
+									$("#phoneCbutton").show(300);
+									$("#phoneSpan").html('valid phone number');
+									Pflag=true;
+								}
+									
+							}
+						})
+						
 					}else{
 						$(this).css('border','1px solid #8A0808');
 						$("#phoneI").hide();
@@ -275,7 +312,7 @@ div {
 <body>
 	
 	<h2>Register</h2>
-	<div class="container">
+	<div class="container" id="container">
 		<form action="/security/memberRegister" name="form" method="post" autocomplete="off" onsubmit="return checkAll();">
 			<!--userid  -->
 			<div class="mb-3">

@@ -35,7 +35,5 @@ public interface SecurityDao {
 
 	public int confrimEmail(String email);
 
-	public String getUseridWithEmail(String email);
-
 	public MemberVo emailExistance(String email);
 }

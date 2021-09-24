@@ -1,42 +1,130 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <%@include file="../navBar.jsp"%>
 
 <style>
 </style>
 
-<meta name="google-signin-client_id" content="496061673952-gifocktg13nj7qq8kf7r8vhcev3g9o01.apps.googleusercontent.com">
+<meta name="google-signin-client_id" content='${ClientId}'>
 <script>
 $(function(){
-	$("#showFindUseridDiv, #U").click(function(){
-		console.log("asd")
+	$("input").attr("autocomplete","off")
+	$("#showFindUseridDiv, .search-close-switch U").click(function(){
+		
 		$("#findUseridDiv").fadeToggle("slow")
 		
 	})
-	$("#showFindPasswordDiv, #P").click(function(){
+	$("#showFindPasswordDiv, .search-close-switch P").click(function(){
 		$("#findPasswordDiv").fadeToggle("slow")
 		
 	})
 	
-	$("#findUseridEmail, #findPasswordEmail").on("propertychange change keyup paste input",function() {
-		console.log(this.value)
+	$("#findUseridEmail").on("propertychange change keyup paste input",function() {
 			$.ajax({
-				url : "/security/memberExistance/",
-				data:{param:this.value},
+				url : "/security/memberExistance/",	
+				data:{searchType:"email",keyword:this.value},
 				type : "GET",
 				context:this,
 				success : function(data) {
 					console.log(data)
 					if (data == "exists") {
+						$(this).css("border-bottom","2px solid green")
+						$("#Uspan").fadeOut();
+						$("#Ubutton").fadeIn();
 						
-					
 					} else {
-					
+						$("#Ubutton").fadeOut();
+						$(this).css("border-bottom","2px solid red")
+						$("#Uspan").fadeIn().html("Email does not exist")
+						
 					}
 				}
 			});
+			
+			
 	})
+	$("#Ubutton").click(function(){
+		$(this).replaceWith("<img src='../resources/imgs/walking.gif'/>")
+		let email=$("#findUseridEmail").val();
+		$.ajax({
+			url : "/security/sendUseridToEmail/"+email,
+			type : "GET",
+			success : function(data) {
+				console.log(data)
+				$("#Udiv").siblings().fadeOut();
+				$("#Udiv").html("Userid Sent!")
+				 setTimeout(function() {$("#findUseridDiv").fadeOut()}, 3000) 
+			}
+		});
+	})
+	$("#findPasswordUserid").on("propertychange change keyup paste input",function() {
+		if(this.value.length>1){
+			$.ajax({
+				url : "/security/useridConfirm/"+this.value,	
+				type : "GET",
+				context:this,
+				success : function(data) {
+					console.log(data)
+					if (data == "exists") {
+						$(this).css("border-bottom","2px solid green")
+						$("#Pspan").fadeOut();
+						$("#NPdiv,#newPassword").fadeIn();
+					} else {
+						$(this).css("border-bottom","2px solid red")
+						$("#Pspan").fadeIn().html("userid does not exist")
+						$("#NPdiv,#newPassword").fadeOut();
+					}
+				}
+			});
+		}
+			
+	})
+	/* $("#UPbutton").click(function(){
+		$('#findPasswordForm').fadeOut().;
+		$('#findPasswordForm').html("<div style='padding-top: 0; font-size: 60px; color: white' id='NPDiv'>Change Password</div><br> <input type='text' id='newPassword' placeholder='Enter new password'><span class='text-secondary' id='NPspan' style='display: none'></span><br> <button type='submit' class='btn btn-outline-secondary' id='NPbutton' style='display: none'>submit</button>")
+		$('#findPasswordForm').fadeIn();
+		/* $("#findPasswordDiv").fadeOut();
+		$("#ChangePasswordDiv").fadeIn();
+	}) */
+	$("#newPassword").on("propertychange change keyup paste input",function() {
+		if(this.value.includes(" ")){
+			$(this).css("border-bottom","2px solid red")
+			$(this).val("")
+			
+			}
+		
+		if(this.value.length>6&&this.value.length<12){
+			$("#NPbutton").fadeIn();
+			$(this).css("border-bottom","2px solid green")
+			$("#NPspan").fadeOut();
+		}else{
+			$("#NPbutton").fadeOut();
+			$(this).css("border-bottom","2px solid red")
+			$("#NPspan").fadeIn().html("password must be of length 6 to 12 without blank");
+		}
+		
+	})
+	$("#NPbutton").click(function(){
+		$(this).replaceWith("<img src='../resources/imgs/walking.gif'/>")
+		let Npwd=$("#newPassword").val();
+		let userid=$("#findPasswordUserid").val();
+		$.ajax({
+			url : "/security/changePassword/",
+			data:{userid,Npwd},
+			type : "GET",
+			success : function(data) {
+				if(data=="success"){
+				$("#NPdiv").siblings().fadeOut();
+				$("#NPdiv").html("Password Changed!")
+				 setTimeout(function() {$("#findPasswordDiv").fadeOut()}, 3000) 
+				}
+			}
+		});
+		
+	})
+	
 })
 //google login&register
 	function init() {
@@ -69,7 +157,7 @@ $(function(){
 							,
 							data : {
 								personFields : 'phoneNumbers,birthdays,genders,names,emailAddresses',
-								key : 'AIzaSyD7NhSWF8BizwFbb1Td7YxnLu0tzHERTow',
+								key : '${ApiKey}',
 								'access_token' : access_token
 							},
 							method : 'GET',
@@ -99,7 +187,7 @@ $(function(){
 								type : "GET",
 																
 								success : function(data) {
-									console.log(data)
+									
 									if (data == "exists") {
 										$("#container").css("visibility","hidden");
 										$("#userid").val(userid);
@@ -115,7 +203,7 @@ $(function(){
 											type : "POST",
 											
 											success : function(data) {
-												console.log(data)
+												
 												location.href="/welcomePage"
 												
 											},
@@ -135,13 +223,16 @@ $(function(){
 					console.log(e);
 				})
 	}
+	
 	function onSignInFailure(t) {
 		console.log(t);
 	}
+	
 	function replaceSpace(){
 		loginForm.userid.value.replace(" ","")
 		loginForm.password.value.replace(" ","")
 	}
+	
 	function emailValidation(email){
 		
 		$.ajax({
@@ -189,7 +280,6 @@ $(function(){
 			</div>
 			<%--  <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}" />  --%>
 
-
 			<button type="submit" class="btn btn-outline-secondary" style="">Login</button>
 			<c:if test="${param.error==1 }">
 				<p>login failed</p>
@@ -209,31 +299,53 @@ $(function(){
 			<a href="/security/memberRegisterPage" class="text-secondary">wanna join our crew?</a>
 		</p>
 		<p class="text-secondary" style="text-align: center">
-			Forgot your<a id="showFindUseridDiv"> userid </a> or<a id="showFindPasswordDiv"> password</a>?
+			Forgot your<a href="# " id="showFindUseridDiv"> userid </a> or<a href="#" id="showFindPasswordDiv"> password</a>?
 		</p>
 
-		<div class="search-model" id="findUseridDiv" style="display: none">
+		<div class="search-model U" id="findUseridDiv" style="display: none">
 			<div class="h-100 d-flex align-items-center justify-content-center">
-				<div class="search-close-switch U" id="U">+</div>
+				<div class="search-close-switch U">+</div>
 				<form class="search-model-form" id="findUseridForm">
-					<h2 style="text-align: center">Let us know your email associated with your account</h2>
+					<div style="padding-top: 0; font-size: 60px; color: white" id="Udiv">Find Userid</div>
+					<h2 style="color: white">Let us know your email associated with your account</h2>
 					<br> <input type="text" id="findUseridEmail" placeholder="Enter your email">
-					<button type="submit" class="btn btn-outline-secondary" style="">Email Me</button>
+					<button type="submit" class="btn btn-outline-secondary" id="Ubutton" style="display: none">Send Userid</button>
+					<br> <span class="text-secondary" id="Uspan" style="display: none"></span>
+
 				</form>
 			</div>
 		</div>
 
-		<div class="search-model" id="findPasswordDiv" style="display: none">
+		<div class="search-model P" id="findPasswordDiv" style="display: none">
 			<div class="h-100 d-flex align-items-center justify-content-center">
-				<div class="search-close-switch P" id="P">+</div>
+				<div class="search-close-switch P">+</div>
 				<form class="search-model-form" id="findPasswordForm">
-					<h2 style="text-align: center">Let us know your userid and email associated with your account</h2>
-					<br> <input type="text" id="findPasswordUserid" placeholder="Enter your userid"> <br> <input type="text" id="findPasswordEmail"
-						placeholder="Enter your email">
-					<button type="submit" class="btn btn-outline-secondary" style="">Email Me</button>
+					<div style="padding-top: 0; font-size: 60px; color: white">Find Password</div>
+					<h2 style="color: white">Let us know your userid associated with your account</h2>
+					<br> <input type="text" id="findPasswordUserid" placeholder="Enter your userid"><span class="text-secondary" id="Pspan" style="display: none"></span>
+					<br>
+					
+					<div style="padding-top: 0; font-size: 60px; color: white;display: none" id="NPdiv">Change Password</div>
+					<br> <input type="text" id="newPassword" placeholder="Enter new password"style="display: none"><span class="text-secondary" id="NPspan" style="display: none"></span>
+					 <br> <button type="submit" class="btn btn-outline-secondary" id="NPbutton" style="display: none">submit</button>
+					
+
 				</form>
 			</div>
 		</div>
+
+		<!-- <div class="search-model C" id="ChangePasswordDiv" style="display: none">
+			<div class="h-100 d-flex align-items-center justify-content-center">
+				<div class="search-close-switch C">+</div>
+				<form class="search-model-form" id="changePasswordForm">
+					<div style="padding-top: 0; font-size: 60px; color: white" id="NPDiv">Change Password</div>
+					<br> <input type="text" id="newPassword" placeholder="Enter new password"><span class="text-secondary" id="NPspan" style="display: none"></span>
+					 <br> <button type="submit" class="btn btn-outline-secondary" id="NPbutton" style="display: none">submit</button>
+					
+				</form>
+			</div>
+		</div>  -->
+
 
 	</div>
 	<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
