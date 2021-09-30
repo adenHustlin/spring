@@ -8,13 +8,13 @@ import javax.naming.NamingException;
 
 import org.omg.CORBA.BAD_INV_ORDER;
 
-import com.gootdate.domain.BoardVo;
+import com.gootdate.domain.CSVo;
 
 
 public interface CsService {
 	// Create
 			// 게시판에 글 저장 하기
-			boolean addBoard(BoardVo bo) throws NamingException, SQLException;
+			boolean addBoard(CSVo bo) throws NamingException, SQLException;
 			
 			
 			
@@ -22,5 +22,9 @@ public interface CsService {
 			// 게시판 전제 글 불러오기
 			Map<String, Object> readAllBoard(int pageNo) throws NamingException, SQLException;
 			//게시물 불러오기
-			BoardVo readBoard(int no)throws NamingException, SQLException;
+			CSVo readBoard(int no)throws NamingException, SQLException;
+
+
+//delete
+			void deleteBoard(int bno);
 }

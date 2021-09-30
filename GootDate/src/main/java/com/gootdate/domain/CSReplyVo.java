@@ -12,18 +12,25 @@ import java.sql.Timestamp;
  * @date: 2021. 9. 8.
  * description:
  */
-public class ReplyVo {
+public class CSReplyVo {
 	private int no;
 	private int bno;
-	private String contents;
 	private String replyer;
-	private Timestamp registerDate;
-	private Timestamp modifyDate;
+	private String contents;
+	private Timestamp date;
 	private String isSecret;
 	
-	public ReplyVo(){
+	public CSReplyVo(){
 		super();
 		
+	}
+
+	public Timestamp getDate() {
+		return date;
+	}
+
+	public void setDate(Timestamp date) {
+		this.date = date;
 	}
 
 	public int getNo() {
@@ -58,22 +65,6 @@ public class ReplyVo {
 		this.replyer = replyer;
 	}
 
-	public Timestamp getRegisterDate() {
-		return registerDate;
-	}
-
-	public void setRegisterDate(Timestamp registerDate) {
-		this.registerDate = registerDate;
-	}
-
-	public Timestamp getModifyDate() {
-		return modifyDate;
-	}
-
-	public void setModifyDate(Timestamp modifyDate) {
-		this.modifyDate = modifyDate;
-	}
-
 	public String getIsSecret() {
 		return isSecret;
 	}
@@ -82,23 +73,24 @@ public class ReplyVo {
 		this.isSecret = isSecret;
 	}
 
-	public ReplyVo(int no, int bno, String contents, String replyer, Timestamp registerDate, Timestamp modifyDate,
-			String isSecret) {
+	@Override
+	public String toString() {
+		return "CSReplyVo [no=" + no + ", bno=" + bno + ", replyer=" + replyer + ", contents=" + contents + ", date="
+				+ date + ", isSecret=" + isSecret + "]";
+	}
+
+	public CSReplyVo(int no, int bno, String replyer, String contents, Timestamp date, String isSecret) {
 		super();
 		this.no = no;
 		this.bno = bno;
-		this.contents = contents;
 		this.replyer = replyer;
-		this.registerDate = registerDate;
-		this.modifyDate = modifyDate;
+		this.contents = contents;
+		this.date = date;
 		this.isSecret = isSecret;
 	}
 
-	@Override
-	public String toString() {
-		return "ReplyVo [no=" + no + ", bno=" + bno + ", contents=" + contents + ", replyer=" + replyer
-				+ ", registerDate=" + registerDate + ", modifyDate=" + modifyDate + ", isSecret=" + isSecret + "]";
-	}
+	
+
 	
 	
 

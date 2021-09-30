@@ -6,7 +6,6 @@
 <title>Insert title here</title>
 <script>
 	$(function() {
-		console.log(CKEDITOR)
 
 		let ckeditor_config = {
 

@@ -6,22 +6,20 @@
 
 <title>Insert title here</title>
 <script type="text/javascript">
-	let urlPath = "http://localhost:8081/";
+	
 	$(function() {
 
 		viewAllReplies();
 		editForm();
 		editReply();
 		deleteReply();
-		let path = '${pageContext.request.contextPath}'
-		console.log(path)
 	})
 	//댓글리스트받아오기
 	function viewAllReplies() {
 		let bno = '${param.no}';
 		console.log(bno);
 		$.ajax({
-			url : urlPath + "replies/viewReplies/" + bno,
+			url :"../CSreplies/viewReplies/" + bno,
 			dataType : "JSON",
 			type : "GET",
 			success : function(data) {
@@ -42,11 +40,9 @@
 		if (data.length == 0) {
 			output += '<hr><p class="text-secondary" style="text-align:center;">be the FIRST ONE!</p>';
 		}
-		$
-				.each(
-						data,
-						function(i, e) {
-							let regDate = new Date(e.registerDate);
+		$.each(data,function(i, e) {
+			console.log(e)
+							let regDate = new Date(e.date);
 							let replyTime = moment(regDate).fromNow()
 							let contents = e.contents
 							/* if(timeGap<60){
@@ -64,9 +60,9 @@
 											+ replyTime
 											+ '</small></div><p class="mb-1">'
 											+ e.contents
-											+ '</p><a href="#"><img src="../resources/imgs/delete.png" id="deleteReply"></a>'
+											+ '</p><a href="javascript:void(0);"><img src="../resources/imgs/delete.png" id="deleteReply"></a>'
 									if (e.replyer == "${loginMember.userid}") {
-										output += '<a href="#" ><img src="../resources/imgs/edit.png" id="editForm" ></a>';
+										output += '<a href="javascript:void(0);" ><img src="../resources/imgs/edit.png" id="editForm" ></a>';
 									}
 
 								} else {
@@ -82,16 +78,16 @@
 										+ e.contents + '</p>'
 								if (e.replyer == "${loginMember.userid}"
 										|| "${loginMember.userid}" == "${board.writer}") {
-									output += '<a href="#"><img src="../resources/imgs/delete.png" id="deleteReply"></a>';
+									output += '<a href="javascript:void(0);"><img src="../resources/imgs/delete.png" id="deleteReply"></a>';
 									if (e.replyer == "${loginMember.userid}") {
-										output += '<a href="#" ><img src="../resources/imgs/edit.png" id="editForm"></a>';
+										output += '<a href="javascript:void(0);" ><img src="../resources/imgs/edit.png" id="editForm"></a>';
 									}
 								}
 								output += '</div>';
 							}
-						})
+						})				
 
-		$("#replyList").html(output);
+		$("#replyList").html(output);						
 	}
 	//댓글추가
 	function addReply() {
@@ -111,21 +107,22 @@
 		});
 		console.log(sendData);
 		$.ajax({
-			url : "../replies/addReply", // ajax와 통신 할 곳
-			data : sendData, // 서블릿에 보낼 데이터
-			dataType : "text", // 수신될 데이터의 타입
-			type : "POST", // 통신 방식
-			contentType : "application/json",//서블릿에 보낼 데이터 타입
+			url : "../CSreplies/addReply",
+			data : sendData, 
+			dataType : "text", 
+			type : "POST", 
+			contentType : "application/json",
 
 			success : function(data) {
-				console.log(data)// 통신 성공시 수행될 콜백 함수
+				console.log(data)
 				if (data == 'success') {
 					$("#replyContents").val('');
 				}
 				viewAllReplies();
+				
 
 			},
-			error : function() { // 통신 실패시 수행될 콜백 함수
+			error : function() { 
 
 			}
 
@@ -141,7 +138,7 @@
 			let rno = parseInt($(this).parent().parent().attr("id"));
 			console.log(rno)
 			$.ajax({
-				url : "../replies/deleteReply?rno=" + rno,
+				url : "../CSreplies/deleteReply?rno=" + rno,
 				type : "delete",
 				success : function(data) {
 					console.log(data)
@@ -157,37 +154,46 @@
 	}
 	//댓글 수정
 	function editForm() {
-		$("body")
-				.on(
-						"click",
-						"#editForm",
-						function() {
-							let prevContent = $(this).parent().parent().find(
-									"p").html();
-							let rno = $(this).parent().parent().attr("id");
-							console.log(prevContent + rno);
-							$(this)
-									.parent()
-									.prev()
-									.html(
-											"<img src='../resources/imgs/check.png' id='editReply'>");
-							$(this).parent().prev().prev().html(
-									"<textarea class='form-control' aria-label='With textarea'id='editedContent' required>"
-											+ prevContent + "</textarea>");
-							$(this)
-									.parent()
-									.html(
-											"<img src='../resources/imgs/cancel.png' onclick='viewAllReplies();'>");
-
-						})
-	}
+		$("body").on("click","#editForm",function() {
+				let prevContent = $(this).parent().parent().find("p").html();
+				let rno = $(this).parent().parent().attr("id");					
+					
+				$(this).parent().prev().html("<img src='../resources/imgs/check.png' id='editReply'>");			
+				$(this).parent().prev().prev().html("<textarea class='form-control' aria-label='With textarea'id='editedContent' required>"+ prevContent+ "</textarea>");			
+				$(this).parent().html("<img src='../resources/imgs/cancel.png' onclick='viewAllReplies();'>");					
+		})							
+	}								
 	function editReply() {
-		$("body").on("click", "#editReply", function() {
+		$("body").on("click","#editReply", function() {
 			let rno = $(this).parent().parent().attr("id");
 			let editedContent = $("#editedContent").val();
 			console.log(rno + editedContent);
 			$.ajax({
-				url : "../replies/editReply",
+				url : "../CSreplies/editReply",
+				data : JSON.stringify({
+					contents : editedContent,
+					no : rno
+				}),
+				contentType : "application/json",
+				type : "put",
+				success : function(data) {
+					console.log(data)
+					viewAllReplies();
+				},
+				error : function(e) {
+					console.log(e)
+				}
+
+			})
+
+		})
+	}				
+	function deleteBoard(){
+		$("body").on("click","#deleteBoard", function() {
+			let bno="${param.no}"
+			console.log(bno)
+			$.ajax({
+				url : "../CSreplies/editReply",
 				data : JSON.stringify({
 					contents : editedContent,
 					no : rno
@@ -209,9 +215,8 @@
 </script>
 </head>
 <style>
-
-.list-group{
-padding: 50px
+.list-group {
+	padding: 50px
 }
 </style>
 <body>
@@ -232,24 +237,12 @@ padding: 50px
 			<label for="content"></label>
 			<div>${board.content }</div>
 
-			<c:choose>
-				<c:when test="${board.image == '' }">
-				</c:when>
-				<c:when test="${board.image != null }">
-					<img src="../resources/${board.image }" />
-				</c:when>
-				<c:when test="${board.notimage != null }">
-					<a href='../resources/${board.notimage }'>${board.notimage }</a>
-				</c:when>
-
-			</c:choose>
-
 		</div>
 
 
 		<c:if test="${board.writer==loginMember.userid }">
-			<a href="#"><img src="../resources/imgs/edit.png"></a>
-			<a href="#"><img src="../resources/imgs/delete.png"></a>
+			<a href="javascript:void(0);"><img src="../resources/imgs/edit.png" id="editBoard"></a>
+			<a href="javascript:void(0);"><img src="../resources/imgs/delete.png" id="deleteBoard"></a>
 		</c:if>
 		<button type="button" class="btn btn-outline-secondary" onclick="location.href='listAll?pageNo=1'">To Lists</button>
 
@@ -258,12 +251,11 @@ padding: 50px
 				<div class="input-group">
 					<textarea class="form-control" aria-label="With textarea" id="replyContents" required></textarea>
 					<button type="button" class="btn btn-outline-secondary" onclick="addReply()">send</button>
-					<input  type="checkbox" value="" id="isSecret"> <label class="form-check-label"> Secret Comment</label>
+					<input type="checkbox" value="" id="isSecret"> <label class="form-check-label"> Secret Comment</label>
 				</div>
 				<div id="replyList"></div>
 			</div>
 		</c:if>
 	</div>
-
+<%@include file="../liveChat/index.html"%>
 	<%@include file="../footer.jsp"%>
-	

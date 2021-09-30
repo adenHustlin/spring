@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans
-	xmlns="http://www.springframework.org/schema/mvc"
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
-
+<!--이현우  -->
 	<!-- 어노테이션 활성화 -->
 	<context:annotation-config />
 	<annotation-driven />
 
 	<!-- 매핑 주소랑 실제 경로랑 엮어서 등록 -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/uploads/**"
-		location="/resources/uploads/" />
-	<resources location="/resources/template/"
-		mapping="/template/**" />
+	<resources mapping="/uploads/**" location="/resources/uploads/" />
+	<resources mapping="/assets/**" location="/resources/assets/"  />
 
 	<!-- 컨트롤러에서 스트링 리턴시 앞 뒤 붙힐거 -->
 	<beans:bean
@@ -38,14 +37,26 @@
 		<beans:property name="maxUploadSize" value="200000000"></beans:property>
 		<beans:property name="uploadTempDir" value="/temp"></beans:property><!--임시디렉터리 -->
 	</beans:bean>
-	<!-- properties 파일 환경변수 이용하기 서블릿 콘텍스트에넣어야함 루트 안됨 -->
+	<!-- properties 파일 환경변수 이용하기 서블릿 콘텍스트-->
 	<beans:bean
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 		<beans:property name="location"
 			value="classpath:properties/Keys.properties" />
 		<beans:property name="fileEncoding" value="UTF-8" />
 	</beans:bean>
-	
+    
+    
+    <!--  <websocket:handlers>
+               <websocket:mapping handler="WebSocketHandler" path="/chat"/>
+               WebSocket Handshake : 웹소켓 핸들러 클래스(echoHandler)가 호출되기전에 HttpSession에 접속하여 
+               '이용자 아이디를 추출하는 기능' 등을 인터셉터가 수행하도록 설정
+               <websocket:handshake-interceptors>
+                       <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+               </websocket:handshake-interceptors>
+               <websocket:sockjs />
+        </websocket:handlers>
+        <beans:bean id="WebSocketHandler" class="com.gootdate.cs.websocket.WebSocketHandler" /> -->
+	<!--이현우끝  -->
 
 
 	<context:component-scan

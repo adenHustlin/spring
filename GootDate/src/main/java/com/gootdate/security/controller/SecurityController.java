@@ -1,6 +1,9 @@
 
 package com.gootdate.security.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -15,12 +18,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.gootdate.domain.MemberVo;
 import com.gootdate.domain.SocialRegisterVo;
 import com.gootdate.security.service.lhw.SecurityService;
@@ -31,19 +37,46 @@ public class SecurityController {
 	@Inject
 	SecurityService service;
 
-	@Value("${google-api-id}")
-	String ApiKey;
+	@Value("${GoogleApiKey}")
+	String GoogleApiKey;
 
-	@Value("${client-id}")
-	String ClientId;
+	@Value("${GoogleClientId}")
+	String GoogleClientId;
+
+	@Value("${NaverClientId}")
+	String NaverClientId;
+
+	@Value("${KakaoClientId}")
+	String KakaoClientId;
+
+	@Value("${FaceBookClientId}")
+	String FaceBookClientId;
+	
+	@Value("${NaverClientIdPrac}")
+	String NaverClientIdPrac;
 
 	// 회원가입 로그인 로그아웃 아이디중복확인
 	// loginPage move
 	@RequestMapping(value = "/loginPage", method = { RequestMethod.GET, RequestMethod.POST })
 	public String loginPage(Model model) {
-		model.addAttribute("ApiKey",ApiKey);
-		model.addAttribute("ClientId",ClientId);
+		model.addAttribute("GoogleApiKey", GoogleApiKey);
+		model.addAttribute("GoogleClientId", GoogleClientId);
+		model.addAttribute("NaverClientId", NaverClientId);
+		model.addAttribute("KakaoClientId", KakaoClientId);
+		model.addAttribute("FaceBookClientId", FaceBookClientId);
+		model.addAttribute("NaverClientIdPrac", NaverClientIdPrac);
 		return "/member/loginPage";
+	}
+
+	@RequestMapping(value = "/loginPageCallback", method = { RequestMethod.GET, RequestMethod.POST })
+	public String loginPageC(Model model) {
+		model.addAttribute("GoogleApiKey", GoogleApiKey);
+		model.addAttribute("GoogleClientId", GoogleClientId);
+		model.addAttribute("NaverClientId", NaverClientId);
+		model.addAttribute("KakaoClientId", KakaoClientId);
+		model.addAttribute("FaceBookClientId", FaceBookClientId);
+		model.addAttribute("NaverClientIdPrac", NaverClientIdPrac);
+		return "/member/loginPageCallback";
 	}
 
 	// memberRegister move
@@ -53,9 +86,15 @@ public class SecurityController {
 		return "/member/memberRegisterPage";
 	}
 
+	@RequestMapping("/SocialMemberRegisterPage")
+	public String toSOcialRegisterPage(HttpServletRequest request, Model model) {
+		model.addAttribute("userid", request.getParameter("userid"));
+		model.addAttribute("name", request.getParameter("name"));
+		return "/member/SocialMemberRegisterPage";
+	}
+
 	@RequestMapping(value = "/SocialMemberRegister", method = RequestMethod.POST)
-	public String SocialregisterMember(HttpSession session, @RequestBody SocialRegisterVo vo,
-			HttpServletRequest request, Model model, HttpServletResponse response) throws Exception {
+	public String SocialregisterMember(@RequestBody SocialRegisterVo vo) throws Exception {
 		System.out.println("Social register process");
 		vo.setEmailConfirm("Y");
 		vo.setEnabled(1);
@@ -63,17 +102,21 @@ public class SecurityController {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String encPassword = encoder.encode(vo.getPassword());
 		vo.setPassword("{bcrypt}" + encPassword);
-		if (service.SocialMemberRegister(vo) == 1) {
-			model.addAttribute("userid", vo.getName());
-			model.addAttribute("message", "since you joined through google, no need to confirm your email. Enjoy!");
+		service.SocialMemberRegister(vo);
 
-		}
+		return "welcomePage";
+	}
+
+	@RequestMapping(value = "/SocialMemberRegister1")
+	public String SocialregisterMember1(@RequestParam String[] memberVo) throws Exception {
+		System.out.println(memberVo.toString());
+
 		return "welcomePage";
 	}
 
 	@RequestMapping(value = "/memberRegister", method = RequestMethod.POST)
-	public String registerMember(HttpSession session, MemberVo vo, HttpServletRequest request, Model model,
-			HttpServletResponse response) throws Exception {
+	public String registerMember(HttpSession session, MemberVo vo, HttpServletRequest request, Model model)
+			throws Exception {
 		System.out.println("register process");
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String encPassword = encoder.encode(vo.getPassword());
@@ -85,7 +128,6 @@ public class SecurityController {
 			model.addAttribute("message", "please confirm your email '" + vo.getEmail() + "' to enable your account");
 		}
 		service.sendMail(vo.getEmail(), "registrEmailConfirm");
-
 
 		return "welcomePage";
 	}
@@ -138,16 +180,19 @@ public class SecurityController {
 																									// 있는지만확인하는걸로 일단합시다
 		Map<String, String> STNK = new HashMap<>();
 		String keyword = request.getParameter("keyword");
-		String searchType=request.getParameter("searchType");
+		String searchType = request.getParameter("searchType");
 		STNK.put("searchType", searchType);
 		STNK.put("keyword", keyword);
-		if (service.getMemberVo(STNK) == null) {
+		MemberVo vo = service.getMemberVo(STNK);
+		if (vo == null) {
+
 			return "does not exist";
 		} else {
 			return "exists";
 		}
 
 	}
+
 	@ResponseBody
 	@RequestMapping("/sendUseridToEmail/{email}")
 	public String sendUseridToEmail(@PathVariable String email, Model model) throws MessagingException {
@@ -156,19 +201,35 @@ public class SecurityController {
 
 		return "success";
 	}
+
 	@ResponseBody
 	@RequestMapping("/changePassword/")
 	public String changePassword(HttpServletRequest request, Model model) throws MessagingException {
-		String Npwd=request.getParameter("Npwd");
-		String userid=request.getParameter("userid");
-		
-		
-		if(service.changePassword(userid,Npwd)==1) {
+		String Npwd = request.getParameter("Npwd");
+		String userid = request.getParameter("userid");
+
+		if (service.changePassword(userid, Npwd) == 1) {
 			return "success";
-		}else {
+		} else {
 			return "fail";
 		}
 
-		
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/memberVoListExistance", method = RequestMethod.GET)
+	public String phoneExistance(HttpServletRequest request) throws Exception {// 여기는 이메일이 디비에
+																				// 있는지만확인하는걸로 일단합시다
+		Map<String, String> STNK = new HashMap<>();
+		String keyword = request.getParameter("keyword");
+		String searchType = request.getParameter("searchType");
+		STNK.put("searchType", searchType);
+		STNK.put("keyword", keyword);
+		System.out.println(service.MemberVoList(STNK));
+		if (service.MemberVoList(STNK).size() >= 1) {
+			return "exists";
+		} else {
+			return "does not exist";
+		}
 	}
 }

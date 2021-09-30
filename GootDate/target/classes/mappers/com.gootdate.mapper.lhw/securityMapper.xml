@@ -41,4 +41,7 @@
 	<update id="changePassword" parameterType="map">
 	update member set password=#{password},failure_cnt=0,enabled=1 where userid=#{userid} 
 	</update>
+	<select id="MemberVoList" resultType="com.gootdate.domain.MemberVo" parameterType="map">
+		select*from member where ${searchType}=#{keyword}
+	</select>
 </mapper>

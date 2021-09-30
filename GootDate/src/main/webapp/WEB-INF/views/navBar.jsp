@@ -7,59 +7,65 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="description" content="Yoga Studio Template">
-<meta name="keywords" content="Yoga, unica, creative, html">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>gootdate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-	integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+	integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"
+>
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/template/css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="/template/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="/template/css/nice-select.css" type="text/css">
-<link rel="stylesheet" href="/template/css/owl.carousel.min.css" type="text/css">
-<link rel="stylesheet" href="/template/css/magnific-popup.css" type="text/css">
-<link rel="stylesheet" href="/template/css/slicknav.min.css" type="text/css">
-<link rel="stylesheet" href="/template/css/style.css" type="text/css">
+
+<link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
+<link rel="icon" type="image/png" href="/assets/img/favicon.png">
+<title>Soft UI Design System by Creative Tim</title>
+<!--     Fonts and icons     -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+<!-- Nucleo Icons -->
+<link href="/assets/css/nucleo-icons.css" rel="stylesheet" />
+<link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
+<!-- Font Awesome Icons -->
+<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
+<!-- CSS Files -->
+<link id="pagestyle" href="/assets/css/soft-design-system.css?v=1.0.5" rel="stylesheet" />
+<script src="/assets/js/core/popper.min.js"></script>
+<script src="/assets/js/core/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
 </head>
 <style>
-#container{
-min-height: 60%;
-margin:auto ;
-padding:0px 0px 300px 0px;
+/* 편하려고 페이지 동일성을위해서 컨테이너하고 제목태그인 h2는 css를 좀입혀놓았습니다 */
+#container {
+	min-height: 50%;
+	margin: auto;
+	padding: 0px 0px 300px 0px;
 }
+
 h2 {
 	text-align: center;
-	padding:100px 0px 100px 0px;
-} 
+	padding: 100px 0px 100px 0px;
+}
 </style>
 <script type="text/javascript">
 	//jQuery.noConflict();
 	$(function() {
 
 		if ('${sessionScope.loginMember}' != '') {
-
-			$("#memberDiv")
-					.html(
-							'<a href="../member/memberPage" >${sessionScope.loginMember.name}</a> <a href="#" id="logout" class="in">Sign out</a>')
-			$("")
+			$("#registerLi")
+					.replaceWith(
+							'<li class="nav-item px-3"><a href="../member/memberPage"  class="nav-link">${sessionScope.loginMember.name}</a></li>')
+			$("#loginLi")
+					.replaceWith(
+							'<li class="nav-item px-3"> <a href="#" id="logout"  class="nav-link">Sign out</a></li>');
 		}
 
 		$("#logout").click(function() {
 			$("#logoutForm").submit();
 		})
-		path = '${pageContext.request.contextPath}'
-		console.log(path)
 	})
-	function moveMemberPage() {
-		location.href = "../member/memberPage"
-	}
 </script>
 <body>
 
@@ -72,79 +78,44 @@ h2 {
 
 		<button type="submit">LOGOUT</button>
 	</form>
-	<!-- Page Preloder -->
-	<div id="preloder">
-		<div class="loader"></div>
-	</div>
 
-	<!-- Search model -->
-	<div class="search-model">
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch">+</div>
-			<form class="search-model-form">
-				<input type="text" id="search-input" placeholder="Search here.....">
-			</form>
-		</div>
-	</div>
-	<!-- Search model end -->
+	<!-- nav -->
+	<div class="container position-sticky z-index-sticky top-0">
+		<div class="row">
+			<div class="col-12">
+				<nav class="navbar navbar-expand-lg  blur blur-rounded top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+					<div class="container-fluid">
+						<a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom">
+							GootDate </a>
+						<button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation"
+							aria-expanded="false" aria-label="Toggle navigation"
+						>
+							<span class="navbar-toggler-icon mt-2"> <span class="navbar-toggler-bar bar1"></span> <span class="navbar-toggler-bar bar2"></span> <span
+								class="navbar-toggler-bar bar3"
+							></span>
+							</span>
+						</button>
+						<div class="collapse navbar-collapse pt-3 pb-2 py-lg-0 w-100" id="navigation">
+							<ul class="navbar-nav navbar-nav-hover ms-lg-12 ps-lg-5 w-100">
 
-	<!-- Header Section Begin -->
-	<header class="header-section">
-		<div class="container-fluid">
-			<div class="inner-header">
-				<div class="logo">
-					<a href="/"><img src="/template/img/logo.png" alt=""></a>
-				</div>
-				<div class="header-right">
-					<img src="/template/img/icons/search.png" alt="" class="search-trigger"> <img src="/template/img/icons/man.png" alt="" onclick="moveMemberPage();" />
-					<a href="#"> <img src="/template/img/icons/bag.png" alt=""> <span>2</span>
-					</a>
-				</div>
-				<div class="user-access" id="memberDiv">
-					<a href="/security/memberRegisterPage">Register</a> <a href="/security/loginPage" class="in">Sign in</a>
-				</div>
-				<nav class="main-menu mobile-menu">
-					<ul>
-						<li><a class="active" href="/">Home</a></li>
-						<li><a href="#">Shop</a>
-							<ul class="sub-menu">
-								<li><a href="#">Product Page</a></li>
-								<li><a href="#">Shopping Card</a></li>
-								<li><a href="#">Check out</a></li>
-							</ul></li>
-						<li><a href="#">About</a></li>
-						<li><a href="/contact">contact</a></li>
-						<li><a href="/cs/listAll?pageNo=1">C S </a></li>
-					</ul>
+
+								<li class="nav-item px-3"><a class="nav-link"> Pages </a></li>
+
+								<li class="nav-item px-3"><a class="nav-link"> Utilities </a></li>
+
+								<li class="nav-item px-3"><a class="nav-link"> Blocks </a></li>
+
+								<li class="nav-item px-3"><a class="nav-link" href="/cs/listAll?pageNo=1"> customer service </a></li>
+
+								<li class="nav-item px-3" id="registerLi"><a class="nav-link" href="/security/memberRegisterPage"> register </a></li>
+
+								<li class="nav-item px-3" id="loginLi"><a class="nav-link" href="/security/loginPage"> login </a></li>
+							</ul>
+						</div>
+					</div>
 				</nav>
-			</div>
-		</div>
-	</header>
-	<!-- Header Info Begin -->
-	<div class="header-info">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-4">
-					<div class="header-item">
-						<img src="/template/img/icons/delivery.png" alt="">
-						<p>Free shipping on orders over $30 in USA</p>
-					</div>
-				</div>
-				<div class="col-md-4 text-left text-lg-center">
-					<div class="header-item">
-						<img src="/template/img/icons/voucher.png" alt="">
-						<p>20% Student Discount</p>
-					</div>
-				</div>
-				<div class="col-md-4 text-left text-xl-right">
-					<div class="header-item">
-						<img src="/template/img/icons/sales.png" alt="">
-						<p>30% off on dresses. Use code: 30OFF</p>
-					</div>
-				</div>
+				<!-- End Navbar -->
 			</div>
 		</div>
 	</div>
-	<!-- Header Info End -->
-	<!-- Header End -->
-	
+	<!-- nav End -->

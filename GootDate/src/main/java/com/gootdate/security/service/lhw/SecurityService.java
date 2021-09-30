@@ -4,6 +4,7 @@
 package com.gootdate.security.service.lhw;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import com.gootdate.domain.MemberDetailsDto;
 import com.gootdate.domain.MemberVo;
 import com.gootdate.domain.SocialRegisterVo;
 import com.gootdate.security.dao.lhw.SecurityDaoImpl;
+
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -51,7 +53,6 @@ public class SecurityService implements UserDetailsService {
 		MemberDetailsDto memberDetailsDto = SecurityDaoImpl.getMemberDetails(userid);
 		if (memberDetailsDto == null) {
 			throw new UsernameNotFoundException(userid);
-
 		}
 		return memberDetailsDto;
 	}
@@ -166,6 +167,10 @@ public class SecurityService implements UserDetailsService {
 		map.put("password", "{bcrypt}"+encNPassword);
 
 		return SecurityDaoImpl.changePassword(map);
+	}
+	public List<Object> MemberVoList(Map<String, String> map) {
+
+		return SecurityDaoImpl.getMemberVoList(map);
 	}
 
 }

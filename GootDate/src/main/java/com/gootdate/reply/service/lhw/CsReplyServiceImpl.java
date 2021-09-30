@@ -4,18 +4,13 @@
 package com.gootdate.reply.service.lhw;
 
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.gootdate.domain.ReplyVo;
+import com.gootdate.domain.CSReplyVo;
 import com.gootdate.reply.dao.lhw.CsReplyDao;
 
 /**
@@ -31,14 +26,14 @@ public class CsReplyServiceImpl implements CsReplyService {
 	private CsReplyDao dao;
 	
 	@Override
-	public List<ReplyVo> listReply(int bno) throws Exception {
+	public List<CSReplyVo> listReply(int bno) throws Exception {
 		
 		return dao.read(bno);
 	}
 	
 
 	@Override
-	public boolean addReply(ReplyVo vo) throws Exception {
+	public boolean addReply(CSReplyVo vo) throws Exception {
 		boolean result=false;
 		int row=dao.create(vo);
 		if(row==1) {
@@ -48,7 +43,7 @@ public class CsReplyServiceImpl implements CsReplyService {
 	}
 
 	@Override
-	public boolean modifyReply(ReplyVo vo) throws Exception {
+	public boolean modifyReply(CSReplyVo vo) throws Exception {
 		boolean result=false;
 		int row=dao.update(vo);
 		if(row==1) {

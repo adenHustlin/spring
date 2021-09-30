@@ -3,6 +3,7 @@
  */
 package com.gootdate.security.dao.lhw;
 
+import java.util.List;
 import java.util.Map;
 
 import com.gootdate.domain.MemberDetailsDto;

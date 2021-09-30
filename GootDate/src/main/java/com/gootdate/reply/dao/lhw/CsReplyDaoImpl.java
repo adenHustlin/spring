@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.gootdate.domain.ReplyVo;
+import com.gootdate.domain.CSReplyVo;
 import com.mysql.cj.Session;
 
 /**
@@ -26,19 +26,19 @@ public class CsReplyDaoImpl implements CsReplyDao {
 	@Inject
 	private SqlSession ses;
 	@Override
-	public List<ReplyVo> read(int bno) throws Exception {
+	public List<CSReplyVo> read(int bno) throws Exception {
 		
 		return ses.selectList(ns+".replyList",bno);
 	}
 
 	@Override
-	public int create(ReplyVo vo) throws Exception {
+	public int create(CSReplyVo vo) throws Exception {
 		
 		return ses.insert(ns+".create",vo);
 	}
 
 	@Override
-	public int update(ReplyVo vo) throws Exception {
+	public int update(CSReplyVo vo) throws Exception {
 		
 		return ses.update(ns+".modify",vo);
 	}

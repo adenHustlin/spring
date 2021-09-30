@@ -2,16 +2,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@include file="../navBar.jsp"%>
 </head>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script> -->
 <script>
 	function readBoard(no) {
 		location.href='../cs/readBoard?no=' + no;
 	}
+	$(function(){
+			
+	})
+
+	
 </script>
 <style>
-
-
 </style>
 <body>
+
+
 	<h2>Customer Service</h2>
 	<div class="container" id="container">
 		<c:choose>
@@ -49,7 +55,7 @@
 
 		<div style="margin-top: 15px; clear: right;">
 			<nav aria-label="Page navigation example">
-				<ul class="pagination" >
+				<ul class="pagination">
 					<c:if test="${param.pageNo > 1 }">
 						<li class="page-item"><a class="page-link" href="../cs/listAll?pageNo=1&searchBy=${param.searchBy}&searchWord=${param.searchWord}">&laquo;</a></li>
 					</c:if>
@@ -64,11 +70,20 @@
 					</c:if>
 					<c:if test="${param.pageNo < pagingInfo.totalPage }">
 						<li class="page-item"><a class="page-link"
-							href="../cs/listAll?pageNo=${pagingInfo.totalPage }&searchBy=${param.searchBy}&searchWord=${param.searchWord}">&raquo;</a></li>
+							href="../cs/listAll?pageNo=${pagingInfo.totalPage }&searchBy=${param.searchBy}&searchWord=${param.searchWord}"
+						>&raquo;</a></li>
 					</c:if>
 				</ul>
 			</nav>
 		</div>
 	</div>
 	
+
+<input type="text" id="sessionId" value="${sessionScope.loginMember.userid}" style="display:none"></input>
+
+</body>
+
+	<audio id='audio' src='/resources/liveChat/alarm.mp3'></audio>
+	<%@include file="../liveChat/index.html"%>
+
 	<%@include file="../footer.jsp"%>

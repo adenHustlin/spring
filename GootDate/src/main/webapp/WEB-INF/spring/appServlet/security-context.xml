@@ -8,10 +8,13 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<s:http auto-config="true">
+	<!-- csrf비활성화 -->
 		<s:csrf disabled="true" />
-		<s:headers>
+		<!-- x-프레임설정 -->
+		<s:headers>		
 			<s:frame-options policy="SAMEORIGIN"></s:frame-options>
 		</s:headers>
+		<!-- 접근권한설정 -->
 		<s:intercept-url pattern="/" access="permitAll" />
 		<s:intercept-url pattern="/security/**"
 			access="isAnonymous()" />
@@ -22,23 +25,26 @@
 		<s:intercept-url pattern="/cs/**"
 			access="hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')" />
 
-
+<!-- 로그인관련설정  -->
 		<s:form-login login-page="/security/loginPage"
 			username-parameter="userid" login-processing-url="/security/login"
 			authentication-failure-handler-ref="loginFailureHandler"
 			authentication-success-handler-ref="loginSuccessHandler" />
+			<!-- 로그아웃설정 -->
 		<s:logout invalidate-session="true" logout-success-url="/"
 			logout-url="/security/logout"
 			delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />
+			<!-- 권한없을때 이동페이지설정 -->
 		<s:access-denied-handler
 			error-page="/accessDeniedPage" />
+			<!-- 자동로그인설정 -->
 		<s:remember-me key="loginMember"
 			token-validity-seconds="432000"
 
 			authentication-success-handler-ref="loginSuccessHandler"
 			remember-me-parameter="remember-me" remember-me-cookie="remember-me" />
 	</s:http>
-
+<!-- 빈설정 -->
 	<context:component-scan
 		base-package="com.gootdate.security.dao.lhw" />
 
@@ -50,7 +56,7 @@
 	<!-- <bean id="UserLoginRememberMeService" class="service.security.UserLoginRememberMeService"> 
 		<constructor-arg name="key" value="qwe" /> <constructor-arg name="userDetailsService" 
 		ref="MemberLoginService" /> </bean> -->
-
+<!-- 로그인절차관련설정 -->
 	<s:authentication-manager>
 		<!-- <security:authentication-provider> <security:jdbc-user-service data-source-ref="dataSource" 
 			users-by-username-query=" SELECT userid , password , enabled FROM member 

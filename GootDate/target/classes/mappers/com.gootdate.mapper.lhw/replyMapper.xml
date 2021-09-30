@@ -3,19 +3,19 @@
 
 <mapper namespace="com.gootdate.mapper.replyMapper">
 	<!--select-->
-	<select id="replyList" resultType="com.gootdate.domain.ReplyVo">
-  		select * from reply where bno=#{bno}
+	<select id="replyList" resultType="com.gootdate.domain.CSReplyVo">
+  		select * from csreply where bno=#{bno}
   	</select>
 	<!--inert-->
 	<insert id="create">
-		insert into reply(bno,contents,replyer,issecret) values(#{bno},#{contents},#{replyer},#{isSecret})
+		insert into csreply(bno,contents,replyer,issecret) values(#{bno},#{contents},#{replyer},#{isSecret})
 	</insert>
 	<!--update-->
 	<update id="modify">
-		update reply set contents=#{contents}, modifydate=now(), issecret=#{isSecret} where no=#{no}
+		update csreply set contents=#{contents},date=now(), issecret=#{isSecret} where no=#{no}
 	</update>
 	<!--delete-->
 	<delete id="remove">
-		delete from reply where no= #{no}
+		delete from csreply where no= #{no}
 	</delete>
 </mapper>

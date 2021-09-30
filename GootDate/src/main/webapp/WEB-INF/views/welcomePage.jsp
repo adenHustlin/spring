@@ -16,7 +16,8 @@
 <script type="text/javascript">
  	setTimeout(function() {
 		location.href="/security/loginPage"
-	}, 5000);
+	}, 7000);
+ 	
 </script>
 <body>
 	<%
@@ -28,9 +29,9 @@
 	<div class="container" id="container">
 
 		<h2 class="text-secondary" style="padding: 400px 0px 0px 0px; text-align: center">
-			Welcome!<br>${name}</h2>
+			Welcome!<br>${param.name}</h2>
 		<br>
-		<div class="text-secondary" style="padding: 0px 290px 0px 290px; text-align: center; width: auto;">${message}</div>
+		<div class="text-secondary" style="padding: 0px 290px 0px 290px; text-align: center; width: auto;">${param.message }</div>
 		<br> <div class="text-secondary" style="padding: 0px 400px 0px 400px; text-align: center; width: auto;" ><img src="/resources/imgs/walking.gif"/></div>
 		<br> <div class="text-secondary" style="padding: 0px 400px 0px 400px; text-align: center; width: auto;" >Redirecting to loginpage..</div>
 		

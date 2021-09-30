@@ -5,7 +5,7 @@ package com.gootdate.reply.service.lhw;
 
 import java.util.List;
 
-import com.gootdate.domain.ReplyVo;
+import com.gootdate.domain.CSReplyVo;
 
 /**
  * @author baekd
@@ -17,11 +17,11 @@ import com.gootdate.domain.ReplyVo;
 
 public interface CsReplyService {
 	//select all replies
-		public List<ReplyVo> listReply(int bno)throws Exception;
+		public List<CSReplyVo> listReply(int bno)throws Exception;
 		//create reply
-		public boolean addReply(ReplyVo vo) throws Exception;
+		public boolean addReply(CSReplyVo vo) throws Exception;
 		//modify reply
-		public boolean modifyReply(ReplyVo vo)throws Exception;
+		public boolean modifyReply(CSReplyVo vo)throws Exception;
 		//delete reply
 		public boolean removeReply(int no)throws Exception;
 

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gootdate.domain.ReplyVo;
+import com.gootdate.domain.CSReplyVo;
 import com.gootdate.reply.service.lhw.CsReplyService;
 
 /**
@@ -30,14 +30,14 @@ import com.gootdate.reply.service.lhw.CsReplyService;
  * @date: 2021. 9. 10. description:
  */
 @RestController
-@RequestMapping("/replies")
+@RequestMapping("/CSreplies")
 public class CsReplyController {
 	@Inject
 	private CsReplyService service;
 
 	// 댓글추가
 	@RequestMapping(value = "/addReply", method = RequestMethod.POST)
-	public ResponseEntity<String> addReply(@RequestBody ReplyVo vo, HttpServletRequest request) {
+	public ResponseEntity<String> addReply(@RequestBody CSReplyVo vo, HttpServletRequest request) {
 		System.out.println("reply process " + vo);
 		System.out.println(request.getRequestURI());
 		ResponseEntity<String> result = null;
@@ -55,18 +55,18 @@ public class CsReplyController {
 
 //댓글목록
 	@RequestMapping(value = "/viewReplies/{bno}", method = RequestMethod.GET)
-	public List<ReplyVo> viewReply(@PathVariable("bno") String value, Model model, HttpServletRequest request)
+	public List<CSReplyVo> viewReply(@PathVariable("bno") String value, Model model, HttpServletRequest request)
 			throws Exception {
 		int bno = Integer.parseInt(value);
 		System.out.println("view replies process " + bno + request.getContextPath());
-		List<ReplyVo> vo = service.listReply(bno);
+		List<CSReplyVo> vo = service.listReply(bno);
 		return vo;
 
 	}
 
 //댓글수정
 	@PutMapping("/editReply")
-	public boolean editReply(@RequestBody ReplyVo vo) throws Exception {
+	public boolean editReply(@RequestBody CSReplyVo vo) throws Exception {
 		System.out.println(vo.toString());
 		return service.modifyReply(vo);
 

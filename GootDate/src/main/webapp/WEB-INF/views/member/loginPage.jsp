@@ -1,14 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+<%@include file="../navBar.jsp"%>
 
 <style>
 </style>
 
-<meta name="google-signin-client_id" content='${ClientId}'>
+<meta name="google-signin-client_id" content='${GoogleClientId}'>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
 $(function(){
+	//비번 아이디찾기
+	naverLogin.init();
 	$("input").attr("autocomplete","off")
 	$("#showFindUseridDiv, .search-close-switch U").click(function(){
 		
@@ -20,7 +27,7 @@ $(function(){
 		
 	})
 	
-	$("#findUseridEmail").on("propertychange change keyup paste input",function() {
+	$("#findUseridEmail").on("input",function() {
 			$.ajax({
 				url : "/security/memberExistance/",	
 				data:{searchType:"email",keyword:this.value},
@@ -58,7 +65,7 @@ $(function(){
 			}
 		});
 	})
-	$("#findPasswordUserid").on("propertychange change keyup paste input",function() {
+	$("#findPasswordUserid").on("input",function() {
 		if(this.value.length>1){
 			$.ajax({
 				url : "/security/useridConfirm/"+this.value,	
@@ -80,14 +87,8 @@ $(function(){
 		}
 			
 	})
-	/* $("#UPbutton").click(function(){
-		$('#findPasswordForm').fadeOut().;
-		$('#findPasswordForm').html("<div style='padding-top: 0; font-size: 60px; color: white' id='NPDiv'>Change Password</div><br> <input type='text' id='newPassword' placeholder='Enter new password'><span class='text-secondary' id='NPspan' style='display: none'></span><br> <button type='submit' class='btn btn-outline-secondary' id='NPbutton' style='display: none'>submit</button>")
-		$('#findPasswordForm').fadeIn();
-		/* $("#findPasswordDiv").fadeOut();
-		$("#ChangePasswordDiv").fadeIn();
-	}) */
-	$("#newPassword").on("propertychange change keyup paste input",function() {
+
+	$("#newPassword").on("input",function() {
 		if(this.value.includes(" ")){
 			$(this).css("border-bottom","2px solid red")
 			$(this).val("")
@@ -125,113 +126,118 @@ $(function(){
 	})
 	
 })
+//비번아이디찾기 끝
 //google login&register
 	function init() {
-		gapi
-				.load(
-						'auth2',
-						function() {
+		gapi.load('auth2',function() {
 							gapi.auth2.init();
 							options = new gapi.auth2.SigninOptionsBuilder();
-							options.setPrompt('select_account');
-							// 추가는 Oauth 승인 권한 추가 후 띄어쓰기 기준으로 추가
-							options
-									.setScope('email profile openid https://www.googleapis.com/auth/userinfo.profile');
-							// 인스턴스의 함수 호출 - element에 로그인 기능 추가
-							// GgCustomLogin은 li태그안에 있는 ID, 위에 설정한 options와 아래 성공,실패시 실행하는 함수들
-							gapi.auth2.getAuthInstance().attachClickHandler(
-									'GgCustomLogin', options, onSignIn,
-									onSignInFailure);
+							options.setPrompt('select_account');							
+							options.setScope('email profile openid https://www.googleapis.com/auth/userinfo.profile');							
+							gapi.auth2.getAuthInstance().attachClickHandler('GgCustomLogin', options, onSignIn,onSignInFailure);
 						})
 	}
 
 	function onSignIn(googleUser) {
 		var access_token = googleUser.getAuthResponse().access_token
-		$
-				.ajax(
-						{
-							// people api를 이용하여 프로필 및 생년월일에 대한 선택동의후 가져온다.
-							url : 'https://people.googleapis.com/v1/people/me'
-							// key에 자신의 API 키를 넣습니다.
-							,
-							data : {
-								personFields : 'phoneNumbers,birthdays,genders,names,emailAddresses',
-								key : '${ApiKey}',
-								'access_token' : access_token
-							},
-							method : 'GET',
-							
-						}).done(
-						function(e) {
+		$.ajax({
+			url : 'https://people.googleapis.com/v1/people/me',
+			data : {personFields : 'phoneNumbers,birthdays,genders,names,emailAddresses',key : '${GoogleApiKey}','access_token' : access_token},
+			method : 'GET',					
+								
+		})					
+		.done(function(e) {
 							let userInfo = googleUser.getBasicProfile()
-							let birth = e.birthdays[0].date.year+
-									"-"+ e.birthdays[0].date.month
-									+"-"+ e.birthdays[0].date.day;
-							let gender = e.genders[0].value
-							let phone = e.phoneNumbers[0].value
-							let userid = e.emailAddresses[0].value
-							let name = e.names[0].displayName;
-							
-							let password=userid
-							let email=userid
-							let memberVo={
-									userid,gender,phone,name,birth,password,email
-							}
-							let JsonData=JSON.stringify(memberVo);
 							console.log(e)
-							console.log(JsonData)
-							
+							let birth;
+							let gender;
+							let phone;
+							let userid=userInfo.getEmail();
+							let name;
+							let email;
+							let password;
+							let memberVo;
 							$.ajax({
 								url : "../security/useridConfirm/" + userid,
 								type : "GET",
 																
 								success : function(data) {
-									
+									console.log(data)
 									if (data == "exists") {
 										$("#container").css("visibility","hidden");
 										$("#userid").val(userid);
 										$("#password").val(userid);
 										$("#loginForm").submit();
 									} else {
-										console.log(JsonData);
-										$.ajax({
-											anyne:true,
-											url : "../security/SocialMemberRegister",
-											data:JsonData,
-											contentType: 'application/json',
-											type : "POST",
+										try{//일단 정보충분한지 확인함
+											birth = e.birthdays[0].date.year+
+													"-"+ e.birthdays[0].date.month
+													+"-"+ e.birthdays[0].date.day;
+											 gender = e.genders[0].value
+											 phone = e.phoneNumbers[0].value.replaceAll("-","")
+										 	 userid = e.emailAddresses[0].value
+											 name = e.names[0].displayName;
 											
-											success : function(data) {
-												
-												location.href="/welcomePage"
-												
-											},
-											error : function() {
-
+											 password=userid
+											 email=userid
+											 memberVo={
+													userid,gender,phone,name,birth,password,email
+											 }
+											
+											}catch (error) {//정보불충분 회원가입페이지이동
+												console.log("정보불충분 회원가입페이지이동")
+												name = userInfo.getName ()
+												userid = userInfo.getEmail ()
+												location.href="../security/SocialMemberRegisterPage?name="+name+"&userid="+userid;
+												return;
 											}
+											let JsonData=JSON.stringify(memberVo);
+											console.log(memberVo)
+											console.log(JsonData)
+											$.ajax({
+												
+												url : "../security/SocialMemberRegister",
+												data:JsonData,
+												contentType: 'application/json',
+												type : "POST",
+												
+												success : function(data) {
+													console.log(data)
+													
+													location.href="/welcomePage?message=since you joined through google, no need to confirm your email. Enjoy!&name="+name;
+													
+												},
+												error : function() {
 
-										});
+												}
+
+											});
+										}
 									}
-								},
-								error : function() {
+								})
+								
 
-								}
-
-							});
-						}).fail(function(e) {
-					console.log(e);
-				})
+							}).fail(function(e) {
+							console.log(e);	
+						
+						})
+				
+										
+						
 	}
 	
 	function onSignInFailure(t) {
 		console.log(t);
 	}
-	
+	//google end
+	//로그인폼 공백 없애기
 	function replaceSpace(){
 		loginForm.userid.value.replace(" ","")
 		loginForm.password.value.replace(" ","")
 	}
 	
+
+	//
 	function emailValidation(email){
 		
 		$.ajax({
@@ -257,6 +263,36 @@ $(function(){
 	}
 	
 </script>
+<style>
+body {margin: 0;}
+.btn-social-login {
+	transition: all .2s;
+	outline: 0;
+	border: 1px solid transparent;
+	padding: .5rem !important;
+	border-radius: 50%;
+	color: #fff;
+	height: 50px;
+	width: 50px;
+}
+
+.btn-social-login:focus {
+	box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+}
+
+.text-dark {
+	color: #343a40 !important;
+}
+
+.search-model {
+	width:100%;
+  height: 100vh;
+  display:none;
+  background-color: black;
+   background-size : cover;
+  opacity: 0.9;
+}
+</style>
 <body>
 
 
@@ -265,12 +301,14 @@ $(function(){
 		<form action="/security/login" method="POST" id="loginForm" onsubmit="replaceSpace();">
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label"><img src="../resources/imgs/person.png"></label> <input type="text" class="form-control"
-					id="userid" name="userid" placeholder="Enter ID" required autofocus>
+					id="userid" name="userid" placeholder="Enter ID" required autofocus
+				>
 			</div>
 
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label"><img src="/resources/imgs/password.png"></label> <input type="password" class="form-control"
-					id="password" name="password" placeholder="Enter password" required>
+					id="password" name="password" placeholder="Enter password" required
+				>
 			</div>
 
 			<div class="mb-3 form-switch">
@@ -292,7 +330,19 @@ $(function(){
 			</c:if>
 
 		</form>
-		<div style="width: 150px" class="g-signin2" id="GgCustomLogin"></div>
+		<hr>
+		<button class='btn-social-login' style='background: #D93025' id="GgCustomLogin">
+			<i class="xi-2x xi-google"></i>
+		</button>
+
+		<button class='btn-social-login' style='background: #1FC700' id="naverIdLogin_loginButton">
+			<i class="xi-2x xi-naver"></i>
+		</button>
+
+
+		<button class='btn-social-login' style='background: #FFEB00' onclick="kakaoLogin();">
+			<i class="xi-2x xi-kakaotalk text-dark"></i>
+		</button>
 
 		<p class="text-secondary" style="text-align: center">
 			<a href="/security/memberRegisterPage" class="text-secondary">wanna join our crew?</a>
@@ -300,61 +350,115 @@ $(function(){
 		<p class="text-secondary" style="text-align: center">
 			Forgot your<a href="# " id="showFindUseridDiv"> userid </a> or<a href="#" id="showFindPasswordDiv"> password</a>?
 		</p>
+		
+</div>
+<!--아이디 비번찾기  -->
+	<div class="search-model U" id="findUseridDiv">
+		<div class="h-100 d-flex align-items-center justify-content-center">
+			<div class="search-close-switch U">+</div>
+			<form class="search-model-form" id="findUseridForm">
+				<div style="padding-top: 0; font-size: 60px; color: white" id="Udiv">Find Userid</div>
+				<h2 style="color: white">Let us know your email associated with your account</h2>
+				<br> <input type="text" id="findUseridEmail" placeholder="Enter your email">
+				<button type="submit" class="btn btn-outline-secondary" id="Ubutton" style="display: none">Send Userid</button>
+				<br> <span class="text-secondary" id="Uspan" style="display: none"></span>
 
-		<div class="search-model U" id="findUseridDiv" style="display: none">
-			<div class="h-100 d-flex align-items-center justify-content-center">
-				<div class="search-close-switch U">+</div>
-				<form class="search-model-form" id="findUseridForm">
-					<div style="padding-top: 0; font-size: 60px; color: white" id="Udiv">Find Userid</div>
-					<h2 style="color: white">Let us know your email associated with your account</h2>
-					<br> <input type="text" id="findUseridEmail" placeholder="Enter your email">
-					<button type="submit" class="btn btn-outline-secondary" id="Ubutton" style="display: none">Send Userid</button>
-					<br> <span class="text-secondary" id="Uspan" style="display: none"></span>
-
-				</form>
-			</div>
+			</form>
 		</div>
-
-		<div class="search-model P" id="findPasswordDiv" style="display: none">
-			<div class="h-100 d-flex align-items-center justify-content-center">
-				<div class="search-close-switch P">+</div>
-				<form class="search-model-form" id="findPasswordForm">
-					<div style="padding-top: 0; font-size: 60px; color: white">Find Password</div>
-					<h2 style="color: white">Let us know your userid associated with your account</h2>
-					<br> <input type="text" id="findPasswordUserid" placeholder="Enter your userid"><span class="text-secondary" id="Pspan" style="display: none"></span>
-					<br>
-					
-					<div style="padding-top: 0; font-size: 60px; color: white;display: none" id="NPdiv">Change Password</div>
-					<br> <input type="text" id="newPassword" placeholder="Enter new password"style="display: none"><span class="text-secondary" id="NPspan" style="display: none"></span>
-					 <br> <button type="submit" class="btn btn-outline-secondary" id="NPbutton" style="display: none">submit</button>
-					
-
-				</form>
-			</div>
-		</div>
-
-		<!-- <div class="search-model C" id="ChangePasswordDiv" style="display: none">
-			<div class="h-100 d-flex align-items-center justify-content-center">
-				<div class="search-close-switch C">+</div>
-				<form class="search-model-form" id="changePasswordForm">
-					<div style="padding-top: 0; font-size: 60px; color: white" id="NPDiv">Change Password</div>
-					<br> <input type="text" id="newPassword" placeholder="Enter new password"><span class="text-secondary" id="NPspan" style="display: none"></span>
-					 <br> <button type="submit" class="btn btn-outline-secondary" id="NPbutton" style="display: none">submit</button>
-					
-				</form>
-			</div>
-		</div>  -->
-
-
-<<<<<<< HEAD
 	</div>
-	<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+
+	<div class="search-model P" id="findPasswordDiv">
+		<div class="h-100 d-flex align-items-center justify-content-center">
+			<div class="search-close-switch P">+</div>
+			<form class="search-model-form" id="findPasswordForm">
+				<div style="padding-top: 0; font-size: 60px; color: white">Change Password</div>
+				<h2 style="color: white">Let us know your userid associated with your account</h2>
+				<br> <input type="text" id="findPasswordUserid" placeholder="Enter your userid"><span class="text-secondary" id="Pspan" style="display: none"></span>
+				<br>
+
+				<div style="padding-top: 0; font-size: 60px; color: white; display: none" id="NPdiv">Change Password</div>
+				<br> <input type="text" id="newPassword" placeholder="Enter new password" style="display: none"><span class="text-secondary" id="NPspan"
+					style="display: none"
+				></span> <br>
+				<button type="submit" class="btn btn-outline-secondary" id="NPbutton" style="display: none">submit</button>
+
+
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	//naver
+	
+var naverLogin = new naver.LoginWithNaverId(
+		{
+			 clientId: "${NaverClientIdPrac}",   
+			  callbackUrl: "http://localhost:8081/security/loginPageCallback",  
+			/*  clientId: "${NaverClientId}",   	
+			  callbackUrl: "http://gootacademy.cafe24.com/security/loginPageCallback",  */
+			isPopup: false,
+			callbackHandle: true,
+			
+		}
+	);	
+
+naverLogin.init();
+
+
+
+	//naver ends
+	//kakaoStart
+	
+	Kakao.init('${KakaoClientId}'); //발급받은 키 중 javascript키를 사용해준다.
+console.log(Kakao.isInitialized()); // sdk초기화여부판단
+//카카오로그인
+function kakaoLogin() {
+    Kakao.Auth.login({
+      success: function (response) {
+        Kakao.API.request({
+          url: '/v2/user/me',
+          success: function (response) {
+        	  console.log(response)
+        	  
+        	  let userid=response.kakao_account.email
+        	  let name=response.kakao_account.profile.nickname
+        	  console.log(userid+name)
+        	  
+        	  $.ajax({
+					url : "../security/useridConfirm/" + userid,
+					type : "GET",
+													
+					success : function(data) {
+						console.log(data)
+						if (data == "exists") {
+							$("#container").css("visibility","hidden");
+							$("#userid").val(userid);
+							$("#password").val(userid);
+							$("#loginForm").submit();
+						}else{
+							location.href="../security/SocialMemberRegisterPage?name="+name+"&userid="+userid;
+						}
+					}
+        	  })
+        	  
+          },
+          fail: function (error) {
+            console.log(error)
+          },
+        })
+      },
+      fail: function (error) {
+        console.log(error)
+      },
+    })
+  }
+
+	//kakao ends
+	
+	</script>
 
 	<%@include file="../footer.jsp"%>
-=======
-<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
 </body>
 </html>
->>>>>>> c87bb8be037e63cc7c890b8a27ab3ba36b16169f
+

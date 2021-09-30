@@ -15,18 +15,18 @@ let PCflag=false;
 let Bflag=false;
 let Gflag=false;
 	$(function() {
-		
+		$("input").attr("autocomplete","off")
 	 			//userid validation
 			$("#userid").on("propertychange change keyup paste input",function() {
 					let userid = this.value;
-					if (userid.search(/\s/g) == -1 && userid.length<=12 && userid.length>=6) {
+					if (userid.search(/\s/g) == -1 && userid.length<=30 && userid.length>=6) {
 						$.ajax({
 							url : "/security/useridConfirm/" + userid,
 							type : "GET",
 							context:this,
 							success : function(data) {
 								if (data == "exists") {
-									$(this).css('border','1px solid #8A0808');
+									$(this).css('border','1px solid red');
 									$("#useridI").hide()
 									$("#useridSpan").html("id exsists")
 									Uflag=false;					
@@ -40,19 +40,19 @@ let Gflag=false;
 						});
 					}  else if(userid.search(/\s/g) != -1){
 						$(this).val('')
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#useridI").hide()
 						$("#useridSpan").html("blank space not allowed ")
 						Uflag=false;
 					
 						}else {
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#useridI").hide()
-						$("#useridSpan").html("Userid must be of length 6 to 12  ")
+						$("#useridSpan").html("Userid must be of length 6 to 30  ")
 						Uflag=false;
 					} 
 					
-					console.log(Uflag)
+					
 				})
 				//password
 			$("#password").on("propertychange change keyup paste input",function(){
@@ -66,7 +66,7 @@ let Gflag=false;
 						PWflag=true;
 						
 					}else{
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#passwordI").hide()
 						$("#pwdSpan").html('password must be of length 6 to 12')
 						$("#CpasswordDiv").hide(300)
@@ -76,11 +76,11 @@ let Gflag=false;
 						$(this).val('')
 						$("#passwordI").hide()
 						$("#CpasswordDiv").hide(300)
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#pwdSpan").html('blank space not allowed');
 						PWflag=false;
 					}
-					console.log(PWflag)
+					
 				})
 				
 				//password confirm
@@ -92,7 +92,7 @@ let Gflag=false;
 						$("#pwdSpan2").html('Password Confirmed')
 						PWCflag=true;
 					}else{
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#CpasswordI").hide()
 						$("#pwdSpan2").html('Does not match')
 						PWCflag=false;
@@ -100,11 +100,11 @@ let Gflag=false;
 					}else{
 						$(this).val('')
 						$("#CpasswordI").hide()
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#pwdSpan2").html('blank space not allowed');
 						PWCflag=false;
 					}
-					console.log(PWCflag)
+					
 				})
 				//name
 				$("#name").on("propertychange change keyup paste input",function(){
@@ -116,7 +116,7 @@ let Gflag=false;
 						$("#nameSpan").html('valid name')
 						Nflag=true;
 					}else{
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#nameI").hide()
 						$("#nameSpan").html('name must be of length 2 to 10')
 						Nflag=false;
@@ -124,11 +124,11 @@ let Gflag=false;
 					}else{
 						$(this).val('')
 						$("#nameI").hide()
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#nameSpan").html('blank space not allowed');
 						Nflag=false;
 					}
-					console.log(Nflag)
+					
 				})
 				//email
 				 $("#email").on("propertychange change keyup paste input",function(){
@@ -144,7 +144,7 @@ let Gflag=false;
 							success:function(data){
 								
 								if(data=="exists"){
-									$(this).css('border','1px solid #8A0808');
+									$(this).css('border','1px solid red');
 									$("#emailI").hide();
 									$("#emailSpan").html('this email already exists');
 									Eflag=false;
@@ -159,7 +159,7 @@ let Gflag=false;
 							}
 						})
 					}else{
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#emailI").hide();
 						$("#emailSpan").html('Invalid email format');
 						Eflag=false;
@@ -167,11 +167,11 @@ let Gflag=false;
 					}else{
 						$(this).val('')
 						$("#emailI").hide();
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#emailSpan").html('blank space not allowed');
 						Eflag=false;
 					}
-					console.log(Eflag)
+					
 				})
 				//phone
 				 $("#phone").on("propertychange change keyup paste input",function(){
@@ -180,14 +180,14 @@ let Gflag=false;
 					if(!phone.includes(" ")){
 					if(phone.length==11){
 						$.ajax({
-							url:"../security/memberExistance",
+							url:"../security/memberVoListExistance",
 							data:{searchType:"phone",keyword:phone},
 							type : "GET",
 							context:this,
 							success:function(data){
-								
-								if(data=="exists"){
-									$(this).css('border','1px solid #8A0808');
+								console.log(data)
+								if(data=="exists"){						
+									$(this).css('border','1px solid red');
 									$("#phoneI").hide();
 									$("#phoneCbutton").hide(300);
 									$("#phoneSpan").html('this phone number alread exists');
@@ -205,7 +205,7 @@ let Gflag=false;
 						})
 						
 					}else{
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#phoneI").hide();
 						$("#phoneCbutton").hide(300);
 						$("#phoneSpan").html('Phone Number must be 11 digits');
@@ -214,11 +214,11 @@ let Gflag=false;
 					}else{
 						$(this).val('')
 						$("#phoneI").hide();
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#phoneSpan").html('blank space not allowed');
 						Pflag=false;
 					}
-					console.log(Pflag)
+					
 				})
 				$("#phoneCbutton").click(function(){
 					console.log(form.phone.value)
@@ -246,7 +246,7 @@ let Gflag=false;
 						$("#phoneCSpan").html('confirmed!');
 						PCflag=true;
 					}else{
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#CphoneI").hide();
 						$("#phoneCSpan").html('Does not match');
 						PCflag=false;
@@ -254,16 +254,17 @@ let Gflag=false;
 					}else{
 						
 						$("#CphoneI").hide();
-						$(this).css('border','1px solid #8A0808');
+						$(this).css('border','1px solid red');
 						$("#phoneCSpan").html('blank space not allowed');
 						$(this).val('')
 						PCflag=false;
 					}
-					console.log(PCflag)
+					
 				})
 				
 	})
 	function checkAll() {
+		$("#submitBtn").replaceWith("<img src='../resources/imgs/walking.gif'/>")
 		console.log(Uflag+","+PWflag+","+PWCflag+","+Nflag+","+Eflag+","+Pflag+","+PCflag)
 		
 		 if(!Uflag){
@@ -342,7 +343,7 @@ div {
 			<!-- email -->
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">email</label> <input type="text" class="form-control" id="email" name="email"
-					placeholder="Enter email" required><i id="emailI"><img src="../resources/imgs/check.png"></i> <span class="form-text" id="emailSpan"></span>
+					autocomplete="off" placeholder="Enter email"  required><i id="emailI"><img src="../resources/imgs/check.png"></i> <span class="form-text" id="emailSpan"></span>
 			</div>
 			<!--phone  -->
 			<div class="mb-3">
@@ -368,8 +369,8 @@ div {
 				</select>
 			</div>
 
-			<button type="submit" class="btn btn-outline-secondary">register</button>
+			<button type="submit" class="btn btn-outline-secondary" id="submitBtn">register</button>
 
 		</form>
 	</div>
-	<%@include file="../footer.jsp"%>
+ <%@include file="../footer.jsp"%> 

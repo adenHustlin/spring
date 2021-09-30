@@ -13,18 +13,34 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<bean id="dataSource"
+
+<!-- defalut -->
+
+	  <bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
-			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+			value="org.mariadb.jdbc.Driver"></property>
 		<property name="url"
-			value="jdbc:log4jdbc:mysql://127.0.0.1:3306/goot6?serverTimezone=Asia/Seoul"></property>
-		<property name="username" value="${DbUsername}"></property>
-		<property name="password" value="${DbPassword}"></property>
-	</bean>
+			value="jdbc:mysql://${GootDateUrl}?serverTimezone=Asia/Seoul"></property>
+		<property name="username" value="${GootDateUsername}"></property>
+		<property name="password" value="${GootDatePassword}"></property>
+	</bean> 
 
-	<!-- Mybatis를 위한 SqlSessionFactory 객체 설정 -->
+
+<!--  cafe24 -->
+	 
+<!-- 	 <bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="org.mariadb.jdbc.Driver"></property>
+		<property name="url"
+			value="jdbc:mysql://${LocalDbUrl}?serverTimezone=UTC"></property>
+		<property name="username" value="${GootDateUsername}"></property>
+		<property name="password" value="${GootDatePassword}"></property>
+	</bean>  
+ -->
+
+	<!-- Mybatis를 위한 SqlSessionFactory 빈 설정 매퍼 경로 설정 -->
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
@@ -34,7 +50,7 @@
 			value="classpath:/mappers/**/*Mapper.xml"></property>
 	</bean>
 
-	<!-- SqlSessionTemplate 객체 설정 -->
+	<!-- SqlSessionTemplate 빈 설정 -->
 	<bean id="sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate"
 		destroy-method="clearCache">
@@ -59,6 +75,7 @@
 			</props>
 		</property>
 	</bean>
+	<!-- 환경변수 인코딩설정 -->
 	<bean
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 		<property name="location"

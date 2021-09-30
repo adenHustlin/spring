@@ -9,7 +9,7 @@ import javax.naming.NamingException;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.gootdate.domain.BoardVo;
+import com.gootdate.domain.CSVo;
 import com.gootdate.domain.MemberPointVo;
 import com.gootdate.domain.PagingInfoDTO;
 
@@ -24,24 +24,11 @@ public class CsDAOImpl implements CsDAO {
 	private SqlSession ses;
 	
 	@Override
-	public int insertBoardVo(BoardVo bo) throws NamingException, SQLException {
-//		int result = 0;
-//		if (bo.getNotimage().equals("")) { // 이미지 인경우
-//			bo.setImage("uploads" + bo.getImage()); 
-//			bo.setThumbimage("uploads" + bo.getThumbimage());
-//			result = ses.insert(namespace + ".createBoardWithImage", bo);
-//		} else if (bo.getImage().equals("")) { // 이미지 파일이 아닌경우
-//			bo.setNotimage("uploads" + bo.getNotimage());
-//			result = ses.insert(namespace + ".createBoardWithNoImage", bo);
-//		} else {
-//			result = ses.insert(namespace + ".createBoard", bo);
-//		
-		
-//		return result;
+	public int insertCSVo(CSVo bo) throws NamingException, SQLException {
 		return ses.insert(namespace + ".createBoard", bo);
 	}
 	@Override
-	public List<BoardVo> selectAllBoard(int pageNo,PagingInfoDTO pi) throws NamingException, SQLException {
+	public List<CSVo> selectAllBoard(int pageNo,PagingInfoDTO pi) throws NamingException, SQLException {
 		return ses.selectList(namespace + ".selectAllBoard",pi);
 	}
 
@@ -57,7 +44,7 @@ public class CsDAOImpl implements CsDAO {
 	}
 
 	@Override
-	public BoardVo selectBoard(int no) throws NamingException, SQLException {
+	public CSVo selectBoard(int no) throws NamingException, SQLException {
 		// TODO Auto-generated method stub
 		return ses.selectOne(namespace+".selectBoard",no);
 	}
@@ -67,6 +54,11 @@ public class CsDAOImpl implements CsDAO {
 
 
 		ses.update(namespace+".increaseReadCount",no);
+	}
+	@Override
+	public void deleteBoard(int bno) {
+		ses.delete(namespace+".deleteBoard",bno);
+		
 	}
 	
 

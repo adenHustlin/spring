@@ -5,7 +5,7 @@ package com.gootdate.reply.dao.lhw;
 
 import java.util.List;
 
-import com.gootdate.domain.ReplyVo;
+import com.gootdate.domain.CSReplyVo;
 
 /**
  * @author baekd
@@ -16,11 +16,11 @@ import com.gootdate.domain.ReplyVo;
  */
 public interface CsReplyDao {
 	//select all replies
-	public List<ReplyVo> read(int bno)throws Exception;
+	public List<CSReplyVo> read(int bno)throws Exception;
 	//create reply
-	public int create(ReplyVo vo) throws Exception;
+	public int create(CSReplyVo vo) throws Exception;
 	//modify reply
-	public int update(ReplyVo vo)throws Exception;
+	public int update(CSReplyVo vo)throws Exception;
 	//delete reply
 	public int delete(int no)throws Exception;
 }

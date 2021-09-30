@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gootdate.cs.dao.lhw.CsDAO;
 import com.gootdate.cs.service.lhw.CsService;
-import com.gootdate.domain.BoardVo;
+import com.gootdate.domain.CSVo;
 import com.gootdate.domain.MemberPointVo;
 import com.gootdate.domain.PagingInfoDTO;
 import com.mysql.cj.jdbc.exceptions.PacketTooBigException;
@@ -26,25 +26,19 @@ public class CsServiceImpl implements CsService {
 	private CsDAO dao;
 
 	@Override
-	public boolean addBoard(BoardVo bo) throws NamingException, SQLException {
-		boolean addBoard = false;
-		// 타이틀에 태그 실행 방지
-//        bo.setContent(bo.getTitle().replace("<", "&lt;")); 
-//        bo.setContent(bo.getTitle().replace(">", "&gt;"));
-//        
-//        bo.setContent(bo.getContent().replace("\n", "<br />")); // 줄바꿈
-//        bo.setContent(bo.getContent().replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;"));
-		int result = dao.insertBoardVo(bo);
-		int result2= 0;
+	public boolean addBoard(CSVo bo) throws NamingException, SQLException {
+		
+
+		int result = dao.insertCSVo(bo);
+		
 		if (result == 1) { // 글쓰기 정상
-			result2 = dao.insertMemberPoint(new MemberPointVo(bo.getWriter(), null, 2, "글작성"));
+			return true;
 			
+		}else {
+			return false;
 		}
 		
-		if (result == 1 && result2 ==1) {
-			
-		}
-		return addBoard;
+		
 	}
 
 	@Override
@@ -76,13 +70,19 @@ public class CsServiceImpl implements CsService {
 	   }
 	 @Transactional(isolation = Isolation.READ_COMMITTED)//조회수 업데이트 문이 커밋된 데이터에 한해 셀렉트되도록 격리 레벨을 올림
 	@Override
-	public BoardVo readBoard(int no) throws NamingException, SQLException {
+	public CSVo readBoard(int no) throws NamingException, SQLException {
 		//하루에 한번 증가시키는거 아이피주소로하는거 jsp할때 했었음 그거참고하자
 		 dao.updateReadCount(no);//readcount 
-		BoardVo vo =dao.selectBoard(no);
+		CSVo vo =dao.selectBoard(no);
 		
 		
 		return vo;
+	}
+
+	@Override
+	public void deleteBoard(int bno) {
+		dao.deleteBoard(bno);
+		
 	}
 
 }

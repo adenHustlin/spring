@@ -5,6 +5,7 @@ package com.gootdate.security.dao.lhw;
 
 import java.io.IOException;
 import java.lang.reflect.Member;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Repository;
 import com.gootdate.domain.MemberDetailsDto;
 import com.gootdate.domain.MemberVo;
 import com.gootdate.domain.SocialRegisterVo;
+
+
 
 /**
  * @author baekd
@@ -102,5 +105,10 @@ public class SecurityDaoImpl implements SecurityDao {
 	public int changePassword(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return ses.update(ns + ".changePassword", map);
+	}
+
+	public List<Object> getMemberVoList(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return ses.selectList(ns+".MemberVoList", map);
 	}
 }
