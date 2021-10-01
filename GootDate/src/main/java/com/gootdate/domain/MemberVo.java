@@ -23,169 +23,155 @@ public class MemberVo {
    private String intro;
    private int height;
    private String style;
+   private String socialRegister;
 
    public MemberVo() {
       super();
    }
 
-   public MemberVo(String userid, String password, String name, String email, String userimg, String authority,
-         Timestamp registerDate, String phone, int enabled, int failure_cnt, String emailConfirm, String birth,
-         String gender, int popul, String intro, int height, String style) {
-      super();
-      this.userid = userid;
-      this.password = password;
-      this.name = name;
-      this.email = email;
-      this.userimg = userimg;
-      this.authority = authority;
-      this.registerDate = registerDate;
-      this.phone = phone;
-      this.enabled = enabled;
-      this.failure_cnt = failure_cnt;
-      this.emailConfirm = emailConfirm;
-      this.birth = birth;
-      this.gender = gender;
-      this.popul = popul;
-      this.intro = intro;
-      this.height = height;
-      this.style = style;
-   }
+public String getUserid() {
+	return userid;
+}
 
-   public int getPopul() {
-      return popul;
-   }
+public void setUserid(String userid) {
+	this.userid = userid;
+}
 
-   public void setPopul(int popul) {
-      this.popul = popul;
-   }
+public String getPassword() {
+	return password;
+}
 
-   public String getIntro() {
-      return intro;
-   }
+public void setPassword(String password) {
+	this.password = password;
+}
 
-   public void setIntro(String intro) {
-      this.intro = intro;
-   }
+public String getName() {
+	return name;
+}
 
-   public int getHeight() {
-      return height;
-   }
+public void setName(String name) {
+	this.name = name;
+}
 
-   public void setHeight(int height) {
-      this.height = height;
-   }
+public String getEmail() {
+	return email;
+}
 
-   public String getStyle() {
-      return style;
-   }
+public void setEmail(String email) {
+	this.email = email;
+}
 
-   public void setStyle(String style) {
-      this.style = style;
-   }
+public String getUserimg() {
+	return userimg;
+}
 
-   public String getUserid() {
-      return userid;
-   }
+public void setUserimg(String userimg) {
+	this.userimg = userimg;
+}
 
-   public void setUserid(String userid) {
-      this.userid = userid;
-   }
+public String getAuthority() {
+	return authority;
+}
 
-   public String getPassword() {
-      return password;
-   }
+public void setAuthority(String authority) {
+	this.authority = authority;
+}
 
-   public void setPassword(String password) {
-      this.password = password;
-   }
+public Timestamp getRegisterDate() {
+	return registerDate;
+}
 
-   public String getName() {
-      return name;
-   }
+public void setRegisterDate(Timestamp registerDate) {
+	this.registerDate = registerDate;
+}
 
-   public void setName(String name) {
-      this.name = name;
-   }
+public String getPhone() {
+	return phone;
+}
 
-   public String getEmail() {
-      return email;
-   }
+public void setPhone(String phone) {
+	this.phone = phone;
+}
 
-   public void setEmail(String email) {
-      this.email = email;
-   }
+public int getEnabled() {
+	return enabled;
+}
 
-   public String getUserimg() {
-      return userimg;
-   }
+public void setEnabled(int enabled) {
+	this.enabled = enabled;
+}
 
-   public void setUserimg(String userimg) {
-      this.userimg = userimg;
-   }
+public int getFailure_cnt() {
+	return failure_cnt;
+}
 
-   public String getAuthority() {
-      return authority;
-   }
+public void setFailure_cnt(int failure_cnt) {
+	this.failure_cnt = failure_cnt;
+}
 
-   public void setAuthority(String authority) {
-      this.authority = authority;
-   }
+public String getEmailConfirm() {
+	return emailConfirm;
+}
 
-   public Timestamp getRegisterDate() {
-      return registerDate;
-   }
+public void setEmailConfirm(String emailConfirm) {
+	this.emailConfirm = emailConfirm;
+}
 
-   public void setRegisterDate(Timestamp registerDate) {
-      this.registerDate = registerDate;
-   }
+public String getBirth() {
+	return birth;
+}
 
-   public String getPhone() {
-      return phone;
-   }
+public void setBirth(String birth) {
+	this.birth = birth;
+}
 
-   public void setPhone(String phone) {
-      this.phone = phone;
-   }
+public String getGender() {
+	return gender;
+}
 
-   public int getEnabled() {
-      return enabled;
-   }
+public void setGender(String gender) {
+	this.gender = gender;
+}
 
-   public void setEnabled(int enabled) {
-      this.enabled = enabled;
-   }
+public int getPopul() {
+	return popul;
+}
 
-   public int getFailure_cnt() {
-      return failure_cnt;
-   }
+public void setPopul(int popul) {
+	this.popul = popul;
+}
 
-   public void setFailure_cnt(int failure_cnt) {
-      this.failure_cnt = failure_cnt;
-   }
+public String getIntro() {
+	return intro;
+}
 
-   public String getEmailConfirm() {
-      return emailConfirm;
-   }
+public void setIntro(String intro) {
+	this.intro = intro;
+}
 
-   public void setEmailConfirm(String emailConfirm) {
-      this.emailConfirm = emailConfirm;
-   }
+public int getHeight() {
+	return height;
+}
 
-   public String getBirth() {
-      return birth;
-   }
+public void setHeight(int height) {
+	this.height = height;
+}
 
-   public void setBirth(String birth) {
-      this.birth = birth;
-   }
+public String getStyle() {
+	return style;
+}
 
-   public String getGender() {
-      return gender;
-   }
+public void setStyle(String style) {
+	this.style = style;
+}
 
-   public void setGender(String gender) {
-      this.gender = gender;
-   }
+public String getSocialRegister() {
+	return socialRegister;
+}
+
+public void setSocialRegister(String socialRegister) {
+	this.socialRegister = socialRegister;
+}
 
 @Override
 public String toString() {
@@ -193,7 +179,36 @@ public String toString() {
 			+ ", userimg=" + userimg + ", authority=" + authority + ", registerDate=" + registerDate + ", phone="
 			+ phone + ", enabled=" + enabled + ", failure_cnt=" + failure_cnt + ", emailConfirm=" + emailConfirm
 			+ ", birth=" + birth + ", gender=" + gender + ", popul=" + popul + ", intro=" + intro + ", height=" + height
-			+ ", style=" + style + "]";
+			+ ", style=" + style + ", socialRegister=" + socialRegister + "]";
 }
+
+public MemberVo(String userid, String password, String name, String email, String userimg, String authority,
+		Timestamp registerDate, String phone, int enabled, int failure_cnt, String emailConfirm, String birth,
+		String gender, int popul, String intro, int height, String style, String socialRegister) {
+	super();
+	this.userid = userid;
+	this.password = password;
+	this.name = name;
+	this.email = email;
+	this.userimg = userimg;
+	this.authority = authority;
+	this.registerDate = registerDate;
+	this.phone = phone;
+	this.enabled = enabled;
+	this.failure_cnt = failure_cnt;
+	this.emailConfirm = emailConfirm;
+	this.birth = birth;
+	this.gender = gender;
+	this.popul = popul;
+	this.intro = intro;
+	this.height = height;
+	this.style = style;
+	this.socialRegister = socialRegister;
+}
+
+   
+
+   
+
 
 }

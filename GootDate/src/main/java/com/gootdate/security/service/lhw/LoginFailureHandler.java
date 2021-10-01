@@ -49,13 +49,17 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		Map<String,String> STNK=new HashMap<String,String>();
 		STNK.put("searchType","userid");
 		STNK.put("keyword", userid);
+		
 		if (securityService.getMemberVo(STNK) != null) {// 계정있음 진짜 이클립스 개빡치게하네
 			MemberVo vo = securityService.getMemberVo(STNK);
 			System.out.println(vo.toString());
 			if (vo.getEmailConfirm().compareTo("N") == 0) {
 				System.out.println("email not confirmed");
 				errormsg = "Please confirm your email '" + vo.getEmail() + "'";
-			} else {
+			}else if(vo.getSocialRegister().compareTo("Y") == 0) {
+				errormsg = "Please use social button to login '" + vo.getEmail() + "'";
+			}
+			else {
 				if (securityService.checkFailureCount(userid) == 5) {
 					securityService.disableMember(userid);
 					errormsg = "Disabled Account, please reset your password";
@@ -75,7 +79,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		request.setAttribute("password", password);
 		request.setAttribute("ERRORMSG", errormsg);
 
-		request.getRequestDispatcher("../security/loginPage").forward(request, response);
+		request.getRequestDispatcher("/security/loginPage").forward(request, response);
 
 	}
 

@@ -32,6 +32,11 @@
       </div>
     </div>
   </header>
+  <sec:authorize access="isAnonymous()"> annonymous </sec:authorize> 
+  <sec:authorize access="isAuthenticated()">authenticated </sec:authorize>
+${sessionScope}
+${10/20 }
+  
 	<div id="container">
 			<h2>index</h2>	
 	

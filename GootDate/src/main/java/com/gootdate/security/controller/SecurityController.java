@@ -1,9 +1,6 @@
 
 package com.gootdate.security.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -11,22 +8,18 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.gootdate.domain.MemberVo;
 import com.gootdate.domain.SocialRegisterVo;
 import com.gootdate.security.service.lhw.SecurityService;
@@ -54,7 +47,8 @@ public class SecurityController {
 	
 	@Value("${NaverClientIdPrac}")
 	String NaverClientIdPrac;
-
+	@Value("${NaverClientIdAws}")
+	String NaverClientIdAws;
 	// 회원가입 로그인 로그아웃 아이디중복확인
 	// loginPage move
 	@RequestMapping(value = "/loginPage", method = { RequestMethod.GET, RequestMethod.POST })
@@ -65,6 +59,7 @@ public class SecurityController {
 		model.addAttribute("KakaoClientId", KakaoClientId);
 		model.addAttribute("FaceBookClientId", FaceBookClientId);
 		model.addAttribute("NaverClientIdPrac", NaverClientIdPrac);
+		model.addAttribute("NaverClientIdAws", NaverClientIdAws);
 		return "/member/loginPage";
 	}
 
@@ -76,6 +71,7 @@ public class SecurityController {
 		model.addAttribute("KakaoClientId", KakaoClientId);
 		model.addAttribute("FaceBookClientId", FaceBookClientId);
 		model.addAttribute("NaverClientIdPrac", NaverClientIdPrac);
+		model.addAttribute("NaverClientIdAws", NaverClientIdAws);
 		return "/member/loginPageCallback";
 	}
 

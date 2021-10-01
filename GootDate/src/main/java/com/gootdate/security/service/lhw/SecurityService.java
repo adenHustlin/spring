@@ -116,8 +116,10 @@ public class SecurityService implements UserDetailsService {
 		String message = "";
 		if (purpose == "registrEmailConfirm") {
 			System.out.println("register email confirm sent");
-			message = "<a href='http://localhost:8081/security/emailConfirm?email=" + email
-					+ "'>누르면 인증성공페이지로 이동합니다</a>";
+//		message = "<a href='http://localhost:8081/security/emailConfirm?email=" + email
+//					+ "'>누르면 인증성공페이지로 이동합니다</a>";
+			message = "<a href='http://gootacademy.cafe24.com/security/emailConfirm?email=" + email
+				+ "'>누르면 인증성공페이지로 이동합니다</a>";
 		} else if (purpose == "sendUseridToEmail") {
 			Map<String, String> STNK = new HashMap<>();
 			STNK.put("searchType", "email");

@@ -3,8 +3,6 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="../navBar.jsp"%>
 
-<style>
-</style>
 
 <meta name="google-signin-client_id" content='${GoogleClientId}'>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
@@ -17,12 +15,12 @@ $(function(){
 	//비번 아이디찾기
 	naverLogin.init();
 	$("input").attr("autocomplete","off")
-	$("#showFindUseridDiv, .search-close-switch U").click(function(){
-		
+	$("#showFindUseridDiv, #closeU").click(function(){
+		console.log("asdsa")
 		$("#findUseridDiv").fadeToggle("slow")
 		
 	})
-	$("#showFindPasswordDiv, .search-close-switch P").click(function(){
+	$("#showFindPasswordDiv, #closeP").click(function(){
 		$("#findPasswordDiv").fadeToggle("slow")
 		
 	})
@@ -264,7 +262,10 @@ $(function(){
 	
 </script>
 <style>
-body {margin: 0;}
+body {
+	margin: 0;
+}
+
 .btn-social-login {
 	transition: all .2s;
 	outline: 0;
@@ -284,13 +285,43 @@ body {margin: 0;}
 	color: #343a40 !important;
 }
 
+body {
+	height: 60%;
+	width: 100%;
+}
+
 .search-model {
-	width:100%;
-  height: 100vh;
-  display:none;
-  background-color: black;
-   background-size : cover;
-  opacity: 0.9;
+	/* Set rules to fill background */
+	min-height: 100%;
+	min-width: 100%;
+	/* Set up proportionate scaling */
+	width: 100%;
+	height: auto;
+	display: none;
+	/* Set up positioning */
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: black;
+	opacity: 0.8;
+	z-index:1000000;
+ 
+
+
+}
+.btn-close{
+position: fixed;
+z-index:1000000;
+top: 0;
+	text-align: center;
+	size: 50px;
+	width:50px;
+	height: 50px;
+}
+#findPasswordForm{
+
+height: 500px;
+
 }
 </style>
 <body>
@@ -330,6 +361,7 @@ body {margin: 0;}
 			</c:if>
 
 		</form>
+		<p class="text-secondary" style="text-align: center">소셜버튼으로 회원가입시 소셜버튼으로 로그인해주세요</p>
 		<hr>
 		<button class='btn-social-login' style='background: #D93025' id="GgCustomLogin">
 			<i class="xi-2x xi-google"></i>
@@ -350,16 +382,16 @@ body {margin: 0;}
 		<p class="text-secondary" style="text-align: center">
 			Forgot your<a href="# " id="showFindUseridDiv"> userid </a> or<a href="#" id="showFindPasswordDiv"> password</a>?
 		</p>
-		
-</div>
-<!--아이디 비번찾기  -->
+
+	</div>
+	<!--아이디 비번찾기  -->
 	<div class="search-model U" id="findUseridDiv">
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch U">+</div>
-			<form class="search-model-form" id="findUseridForm">
-				<div style="padding-top: 0; font-size: 60px; color: white" id="Udiv">Find Userid</div>
+		<div class="h-100 d-flex align-items-center justify-content-center" >
+			<a class="btn-close"  id="closeU"></a>
+			<form class="search-model-form" id="findUseridForm" style="margin:auto;margin-top: 100px">
+				<div style="vertical-align:middle; font-size: 60px; color: white" id="Udiv">Find Userid</div>
 				<h2 style="color: white">Let us know your email associated with your account</h2>
-				<br> <input type="text" id="findUseridEmail" placeholder="Enter your email">
+				<br> <input class="form-control" aria-describedby="inputGroup-sizing-lg" type="text" id="findUseridEmail" placeholder="Enter your email">
 				<button type="submit" class="btn btn-outline-secondary" id="Ubutton" style="display: none">Send Userid</button>
 				<br> <span class="text-secondary" id="Uspan" style="display: none"></span>
 
@@ -368,16 +400,16 @@ body {margin: 0;}
 	</div>
 
 	<div class="search-model P" id="findPasswordDiv">
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch P">+</div>
-			<form class="search-model-form" id="findPasswordForm">
-				<div style="padding-top: 0; font-size: 60px; color: white">Change Password</div>
+		<div class="h-100 d-flex align-items-center justify-content-center" style="margin:auto;margin-top: 100px">
+			<a class="btn-close"  id="closeP"></a>
+			<form class="search-model-form" id="findPasswordForm" style="vertical-align: middle;">
+				<div style="vertical-align:middle; font-size: 60px; color: white">Change Password</div>
 				<h2 style="color: white">Let us know your userid associated with your account</h2>
-				<br> <input type="text" id="findPasswordUserid" placeholder="Enter your userid"><span class="text-secondary" id="Pspan" style="display: none"></span>
+				<br> <input class="form-control" type="text" id="findPasswordUserid" placeholder="Enter your userid"><span class="text-secondary" id="Pspan" style="display: none"></span>
 				<br>
 
 				<div style="padding-top: 0; font-size: 60px; color: white; display: none" id="NPdiv">Change Password</div>
-				<br> <input type="text" id="newPassword" placeholder="Enter new password" style="display: none"><span class="text-secondary" id="NPspan"
+				<br> <input class="form-control" aria-describedby="inputGroup-sizing-lg" type="text" id="newPassword" placeholder="Enter new password" style="display: none"><span class="text-secondary" id="NPspan"
 					style="display: none"
 				></span> <br>
 				<button type="submit" class="btn btn-outline-secondary" id="NPbutton" style="display: none">submit</button>
@@ -392,11 +424,13 @@ body {margin: 0;}
 	
 var naverLogin = new naver.LoginWithNaverId(
 		{
-			 clientId: "${NaverClientIdPrac}",   
-			  callbackUrl: "http://localhost:8081/security/loginPageCallback",  
-			/*  clientId: "${NaverClientId}",   	
-			  callbackUrl: "http://gootacademy.cafe24.com/security/loginPageCallback",  */
-			isPopup: false,
+			   clientId: "${NaverClientIdPrac}",   
+			  callbackUrl: "http://localhost:8081/security/loginPageCallback", 
+			    /* clientId: "${NaverClientId}",   	
+			  callbackUrl: "http://gootacademy.cafe24.com/security/loginPageCallback", */ 
+			   /* clientId: "${NaverClientIdAws}",   
+			  callbackUrl: "http://3.34.86.169:8080/security/loginPageCallback",	 */
+			  isPopup: false,
 			callbackHandle: true,
 			
 		}

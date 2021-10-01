@@ -15,7 +15,7 @@ $(function() {
 
 	//웹소켓 객체 만드는 코드
 	/*ws = new WebSocket('ws://localhost:8081/websocket');*/
-	ws = new WebSocket('ws://gootacademy.cafe24.com/websocket');
+	ws = new WebSocket('ws://3.34.86.169:8080/websocket');
 	console.log(ws)
 	ws.onopen = function(event) {
 		insertToast(event)
@@ -27,6 +27,7 @@ $(function() {
 		insertMessage(event);
 	};
 	ws.onclose = function(event) {
+		console.log("websocket closed")
 		if (event.data === undefined) return;	
 		insertMessage(event)
 	}

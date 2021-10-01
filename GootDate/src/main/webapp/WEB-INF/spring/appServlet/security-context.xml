@@ -62,8 +62,8 @@
 			users-by-username-query=" SELECT userid , password , enabled FROM member 
 			WHERE userid = ?" authorities-by-username-query=" SELECT userid, authority 
 			FROM member WHERE userid = ?" /> </security:authentication-provider> -->
-		<s:authentication-provider
-			ref="authenticationProvider" />
+		 <s:authentication-provider
+			ref="authenticationProvider" /> 
 		<s:authentication-provider
 			user-service-ref="MemberLoginService" />
 		
@@ -73,6 +73,6 @@
 
 	<bean id="MemberLoginService"
 		class="com.gootdate.security.service.lhw.SecurityService" />
-	<bean id="authenticationProvider"
-		class="com.gootdate.security.service.lhw.AuthenticationProvider" />
+	 <bean id="authenticationProvider"
+		class="com.gootdate.security.service.lhw.AuthenticationProvider" /> 
 </beans>

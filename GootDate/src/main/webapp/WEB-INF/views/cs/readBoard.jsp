@@ -23,7 +23,6 @@
 			dataType : "JSON",
 			type : "GET",
 			success : function(data) {
-				console.log(data)
 				showReplyList(data);
 			},
 			error : function() {
@@ -35,13 +34,12 @@
 
 	//리스트 출력
 	function showReplyList(data) {
-		console.log(data)
 		let output = "";
 		if (data.length == 0) {
 			output += '<hr><p class="text-secondary" style="text-align:center;">be the FIRST ONE!</p>';
 		}
 		$.each(data,function(i, e) {
-			console.log(e)
+			
 							let regDate = new Date(e.date);
 							let replyTime = moment(regDate).fromNow()
 							let contents = e.contents

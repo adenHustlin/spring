@@ -62,7 +62,7 @@ public class CsController {
 		PagingInfoDTO pi = (PagingInfoDTO) map.get("pagingInfo");
 		model.addAttribute("pagingInfo", pi);
 		model.addAttribute("listBoard", lst);
-
+		
 	}
 
 	// 글작성

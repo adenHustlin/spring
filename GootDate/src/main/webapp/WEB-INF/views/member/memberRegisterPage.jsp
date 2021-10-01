@@ -190,7 +190,7 @@ let Gflag=false;
 									$(this).css('border','1px solid red');
 									$("#phoneI").hide();
 									$("#phoneCbutton").hide(300);
-									$("#phoneSpan").html('this phone number alread exists');
+									$("#phoneSpan").html('this phone number already exists');
 									Pflag=false;
 								}
 								else{
@@ -264,7 +264,7 @@ let Gflag=false;
 				
 	})
 	function checkAll() {
-		$("#submitBtn").replaceWith("<img src='../resources/imgs/walking.gif'/>")
+		
 		console.log(Uflag+","+PWflag+","+PWCflag+","+Nflag+","+Eflag+","+Pflag+","+PCflag)
 		
 		 if(!Uflag){
@@ -289,9 +289,12 @@ let Gflag=false;
 			$("#Cphone").focus()
 		} 
 		if(Uflag&&PWflag&&PWCflag&&Nflag&&Eflag&&Pflag&&PCflag){
+			$("#submitBtn").replaceWith("<img src='../resources/imgs/walking.gif' id='tmp'/>")
 			return true;
 		}else{
+			
 			return false;
+			
 		}
 		
 	}
