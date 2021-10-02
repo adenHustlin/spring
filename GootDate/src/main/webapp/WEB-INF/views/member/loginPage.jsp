@@ -424,10 +424,10 @@ height: 500px;
 	
 var naverLogin = new naver.LoginWithNaverId(
 		{
-			   clientId: "${NaverClientIdPrac}",   
-			  callbackUrl: "http://localhost:8081/security/loginPageCallback", 
-			    /* clientId: "${NaverClientId}",   	
-			  callbackUrl: "http://gootacademy.cafe24.com/security/loginPageCallback", */ 
+			   /* clientId: "${NaverClientIdPrac}",   
+			  callbackUrl: "http://localhost:8081/security/loginPageCallback",  */
+			     clientId: "${NaverClientId}",   	
+			  callbackUrl: "http://gootacademy.cafe24.com/security/loginPageCallback",  
 			   /* clientId: "${NaverClientIdAws}",   
 			  callbackUrl: "http://3.34.86.169:8080/security/loginPageCallback",	 */
 			  isPopup: false,

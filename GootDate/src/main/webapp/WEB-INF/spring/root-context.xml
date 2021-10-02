@@ -26,17 +26,14 @@
 	<!-- cafe24 -->
 
 
-<!-- 
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName"
-			value="org.mariadb.jdbc.Driver"></property>
-		<property name="url"
-			value="jdbc:mariadb://${GootDateUrl}?characterEncoding=utf8"></property>
-		<property name="username" value="${GootDateUsername}"></property>
-		<property name="password" value="${GootDatePassword}"></property>
-	</bean> -->
 
+<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://${GootDateUrl}"/>
+		<property name="username" value="${GootDateUsername}"/>
+		<property name="password" value="${GootDatePassword}"/>
+	</bean> 
+ -->
 
 	<!--hyunwoo Db -->
 
@@ -44,7 +41,7 @@
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property> 
 		<property name="url" value="jdbc:mysql://${hyunwooDbUrl}"></property> <property 
 		name="username" value="${hyunwooDbUsername}"></property> <property name="password" 
-		value="${hyunwooDbPassword}"></property> </bean> 
+		value="${hyunwooDbPassword}"></property> </bean>  
 
 	<!-- Mybatis를 위한 SqlSessionFactory 빈 설정 매퍼 경로 설정 -->
 	<bean id="sqlSessionFactory"

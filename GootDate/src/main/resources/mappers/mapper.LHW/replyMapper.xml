@@ -8,7 +8,7 @@
   	</select>
 	<!--inert-->
 	<insert id="create">
-		insert into csreply(bno,contents,replyer,issecret) values(#{bno},#{contents},#{replyer},#{isSecret})
+		insert into csreply(bno,contents,replyer,issecret,parentno) values(#{bno},#{contents},#{replyer},#{isSecret},#{parentno})
 	</insert>
 	<!--update-->
 	<update id="modify">
@@ -16,6 +16,6 @@
 	</update>
 	<!--delete-->
 	<delete id="remove">
-		delete from csreply where no= #{no}
+		delete from csreply where no= #{no} or parentno=#{no}
 	</delete>
 </mapper>

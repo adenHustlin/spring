@@ -13,6 +13,9 @@
 		editForm();
 		editReply();
 		deleteReply();
+		deleteBoard();
+		NestedReplyForm();
+		addNestedReply()
 	})
 	//댓글리스트받아오기
 	function viewAllReplies() {
@@ -34,6 +37,7 @@
 
 	//리스트 출력
 	function showReplyList(data) {
+		$("#replyList").html('')
 		let output = "";
 		if (data.length == 0) {
 			output += '<hr><p class="text-secondary" style="text-align:center;">be the FIRST ONE!</p>';
@@ -43,12 +47,6 @@
 							let regDate = new Date(e.date);
 							let replyTime = moment(regDate).fromNow()
 							let contents = e.contents
-							/* if(timeGap<60){
-								replyTime=timeGap+"mins ago"
-							}else{
-								replyTime=moment(regDate).format('YYYY MM DD')
-							} */
-
 							if (e.isSecret == 'Y') {
 								if (e.replyer == "${loginMember.userid}"
 										|| "${loginMember.userid}" == "${board.writer}") {
@@ -59,8 +57,10 @@
 											+ '</small></div><p class="mb-1">'
 											+ e.contents
 											+ '</p><a href="javascript:void(0);"><img src="../resources/imgs/delete.png" id="deleteReply"></a>'
+											+'<a href="javascript:void(0);" ><img src="../resources/imgs/nestedReply.png" id="nestedReplyForm"></a>'
 									if (e.replyer == "${loginMember.userid}") {
 										output += '<a href="javascript:void(0);" ><img src="../resources/imgs/edit.png" id="editForm" ></a>';
+												
 									}
 
 								} else {
@@ -74,6 +74,7 @@
 										+ replyTime
 										+ '</small></div><p class="mb-1">'
 										+ e.contents + '</p>'
+										+'<a href="javascript:void(0);" ><img src="../resources/imgs/nestedReply.png" id="nestedReplyForm"></a>'
 								if (e.replyer == "${loginMember.userid}"
 										|| "${loginMember.userid}" == "${board.writer}") {
 									output += '<a href="javascript:void(0);"><img src="../resources/imgs/delete.png" id="deleteReply"></a>';
@@ -83,16 +84,28 @@
 								}
 								output += '</div>';
 							}
+							if(e.parentno==0){
+								$("#replyList").append(output);
+								output=''
+							}else{
+								 $("#replyList").find("#"+e.parentno).last().append(output)
+								 output=""
+							}
+							
 						})				
 
-		$("#replyList").html(output);						
+		/* $("#replyList").html(output);	 */					
 	}
 	//댓글추가
 	function addReply() {
+		
 		let bno = '${param.no}';
 		bno = parseInt(bno);
 		let writer = "${loginMember.userid}";
 		let content = $("#replyContents").val();
+		if(content==""){
+			return
+		}
 		let isSecret = "N";
 		if ($("#isSecret").is(":checked")) {
 			isSecret = "Y";
@@ -150,17 +163,19 @@
 
 		})
 	}
-	//댓글 수정
+	//댓글 수정 폼
 	function editForm() {
 		$("body").on("click","#editForm",function() {
 				let prevContent = $(this).parent().parent().find("p").html();
 				let rno = $(this).parent().parent().attr("id");					
-					
+				$(this).parent().prev().prev().html('')	
 				$(this).parent().prev().html("<img src='../resources/imgs/check.png' id='editReply'>");			
-				$(this).parent().prev().prev().html("<textarea class='form-control' aria-label='With textarea'id='editedContent' required>"+ prevContent+ "</textarea>");			
+				$(this).parent().prev().prev().prev().html("<textarea class='form-control' aria-label='With textarea'id='editedContent' required>"+ prevContent+ "</textarea>");			
 				$(this).parent().html("<img src='../resources/imgs/cancel.png' onclick='viewAllReplies();'>");					
 		})							
-	}								
+	}					
+	
+	//댓글수정한거 서브밋
 	function editReply() {
 		$("body").on("click","#editReply", function() {
 			let rno = $(this).parent().parent().attr("id");
@@ -185,28 +200,71 @@
 			})
 
 		})
-	}				
+	}
+	//대댓글 폼
+	function NestedReplyForm() {
+		$("body").on("click","#nestedReplyForm",function() {
+		    console.log($(this).attr('class'))
+		    let referingTo=$(this).parent().parent().find("h3").html()
+		    let parentNo=$(this).parent().parent().attr("id")
+		    console.log(referingTo+","+parentNo)
+						
+				$(this).parent().parent().append("<div class='form-control' aria-label='With textarea'id='' contentEditable='true'><a href='#'contentEditable='false'>"+referingTo+"&emsp;</a></div>"
+				+"<img src='../resources/imgs/check.png' id='addNestedReply' class='"+parentNo+"'>"
+				+"<img src='../resources/imgs/cancel.png' onclick='viewAllReplies();'>")
+				$(this).replaceWith('')
+		})
+	}
+	
+	
+	//대댓글 서브밋
+	function addNestedReply(){
+		$("body").on("click","#addNestedReply", function() {
+			let bno = '${param.no}';
+			bno = parseInt(bno);
+			let replyer = "${loginMember.userid}";
+		    let parentno=parseInt($(this).attr('class'));
+		    let contents=$(this).prev().html()
+		   
+			let sendData = JSON.stringify({
+			bno,
+			replyer,
+			contents,
+			parentno
+		});
+
+		    console.log(sendData)
+		    $.ajax({
+				url : "../CSreplies/addReply",
+				data : sendData, 
+				dataType : "text", 
+				type : "POST", 
+				contentType : "application/json",
+
+				success : function(data) {
+					console.log(data)
+					if (data == 'success') {
+						$("#replyContents").val('');
+					}
+					viewAllReplies();
+					
+
+				},
+				error : function() { 
+
+				}
+
+			}); 
+
+		})
+		
+	}
 	function deleteBoard(){
+		console.log("asdsad")
 		$("body").on("click","#deleteBoard", function() {
 			let bno="${param.no}"
 			console.log(bno)
-			$.ajax({
-				url : "../CSreplies/editReply",
-				data : JSON.stringify({
-					contents : editedContent,
-					no : rno
-				}),
-				contentType : "application/json",
-				type : "put",
-				success : function(data) {
-					console.log(data)
-					viewAllReplies();
-				},
-				error : function(e) {
-					console.log(e)
-				}
-
-			})
+			 location.href="../cs/deleteBoard?bno="+bno
 
 		})
 	}
@@ -255,5 +313,5 @@
 			</div>
 		</c:if>
 	</div>
-<%@include file="../liveChat/index.html"%>
+	<%-- <%@include file="../liveChat/index.html"%> --%>
 	<%@include file="../footer.jsp"%>

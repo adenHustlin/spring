@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.gootdate.cs.service.lhw.CsService;
 import com.gootdate.domain.CSVo;
@@ -90,16 +92,19 @@ public class CsController {
 		model.addAttribute("board", vo);
 	}
 
-	// 글상세페이지
+	// 글삭제
 	@RequestMapping(value = "/deleteBoard", method = RequestMethod.GET)
-	public void deleteBoard(@RequestParam("no") String tmp, Model model, HttpServletRequest request)
+	public ModelAndView deleteBoard(@RequestParam("bno") String tmp,ModelAndView mv, Model model, HttpServletRequest request)
 			throws NamingException, SQLException {
 		
 		int bno = Integer.parseInt(tmp);
 		
 		service.deleteBoard(bno);
-		
+		mv.setView(new RedirectView("/cs/listAll"));
+		return mv;
 	}
+	//글수정
+	
 
 //에디터 이미지 업로드
 	@RequestMapping("/imageUpload")

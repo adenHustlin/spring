@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="s"%>
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -30,10 +31,13 @@
 <link id="pagestyle" href="/assets/css/soft-design-system.css?v=1.0.5" rel="stylesheet" />
 <script src="/assets/js/core/popper.min.js"></script>
 <script src="/assets/js/core/bootstrap.min.js"></script>
-
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
+<!-- live notification -->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
 
 </head>
 <style>
@@ -85,8 +89,8 @@ h2 {
 			<div class="col-12">
 				<nav class="navbar navbar-expand-lg  blur blur-rounded top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
 					<div class="container-fluid">
-						<a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom">
-							GootDate </a>
+						<a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom"> GootDate
+						</a>
 						<button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation"
 							aria-expanded="false" aria-label="Toggle navigation"
 						>
@@ -110,6 +114,7 @@ h2 {
 								<li class="nav-item px-3" id="registerLi"><a class="nav-link" href="/security/memberRegisterPage"> register </a></li>
 
 								<li class="nav-item px-3" id="loginLi"><a class="nav-link" href="/security/loginPage"> login </a></li>
+
 							</ul>
 						</div>
 					</div>
@@ -119,3 +124,9 @@ h2 {
 		</div>
 	</div>
 	<!-- nav End -->
+<s:authorize access="isAuthenticated()">
+		<audio id='audio' src='/resources/liveChat/alarm.mp3'></audio>
+		 <input type="text" id="sessionId" value="${sessionScope.loginMember.userid}" style="display: none"></input> 
+
+	</s:authorize>
+	

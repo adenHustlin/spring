@@ -67,8 +67,8 @@
 	
 var naverLogin = new naver.LoginWithNaverId(
 		{
-		  clientId: "${NaverClientIdPrac}",
-			 callbackUrl: "http://localhost:8081/security/loginPageCallback", 
+		  /* clientId: "${NaverClientIdPrac}",
+			 callbackUrl: "http://localhost:8081/security/loginPageCallback",  */
 			   clientId: "${NaverClientId}",  			
 			 callbackUrl: "http://gootacademy.cafe24.com/security/loginPageCallback", 
 			   /* clientId: "${NaverClientIdAws}",   

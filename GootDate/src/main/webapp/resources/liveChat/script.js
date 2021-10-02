@@ -1,5 +1,5 @@
 
-let audio=document.getElementById('audio')
+let audio = document.getElementById('audio')
 
 var ws;
 var messages = document.getElementById("message");
@@ -18,52 +18,47 @@ $(function() {
 	ws = new WebSocket('ws://3.34.86.169:8080/websocket');
 	console.log(ws)
 	ws.onopen = function(event) {
-		insertToast(event)
-		console.log(event)		
-		if (event.data === undefined){return};			
+		console.log("connected")
+		ws.send($("#sessionId").val() + "," + "connected" + "," + " has been connected");
+
+
 	};
 	ws.onmessage = function(event) {
-		/*writeResponse(event.data);*/
-		insertMessage(event);
+		ProcessMessage(event);
 	};
 	ws.onclose = function(event) {
+		if (event.data === undefined) return;
 		console.log("websocket closed")
-		if (event.data === undefined) return;	
-		insertMessage(event)
 	}
 
 })
-//alert
 
-function insertToast(){
-	if(event.type=="open"){
-	toastr.success("you are connected to web socket");
-	}
-	if(event.data){
-		
-	}
-}
 
 
 //send 버튼 누르면 메시지 소켓에 전송 화면에 뽑는건 다시 받아온거를 뽑는다
 $('.message-submit').click(function() {
-		
-	let text = $(".message-input").val();
-	$(".message-input").val('')
-	
-	if ($.trim(text) == '') {
+
+	if ($.trim($(".message-input").val()) == '') {
 		return false;
 	}
-	ws.send(text);
-	text = "";
+	let request;
+	let userid = $("#sessionId").val()
+	let purpose = "chat"
+	let message = $(".message-input").val();
+	request = userid + "," + purpose + "," + message;
+
+	ws.send(request);
+	$(".message-input").val('')
+	request = "";
 
 
 });
 //페이지 나가거나 바꾸기전 소캣객체 닫기
 $(window).on("beforeunload", function() {
+	ws.send($("#sessionId").val() + "," + "disconnected" + "," + " has been disconnected");
 	ws.close();
 })
-
+//chat room css part
 var $messages = $('.messages-content'),
 	d, h, m,
 	i = 0;
@@ -88,27 +83,39 @@ function setDate() {
 }
 
 //웹소켓에서 받아온 메시지 출력
-function insertMessage(event) {
-	if(event=="open"){
-		$('<div class="message">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
-		return
-	}else if(event=="close"){
-		return
-	}
-	let msg = event.data.split(":")[1];
-	let Id=event.data.split(":")[0];
-	
-	if(Id==$("#sessionId").val()){
-		$('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
-		setDate();
-		updateScrollbar();
-	}else{
-		audio.play();
-		$('<div class="message new"><figure class="avatar"><img src="http://askavenue.com/img/17.jpg" /></figure>' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
-		setDate();
-		updateScrollbar();
-	}
+function ProcessMessage(event) {
+	let str = event.data.split(",");
+	let userid = str[0];
+	let purpose = str[1]
+	let message = str[2];
 
+
+	if (purpose == "connected") {
+		toastr.info(userid + "  " + message);
+
+
+	} else if (purpose == "disconnected") {
+		toastr.error(userid + "  " + message);
+
+	} else if (purpose == "chat") {
+		if ($('.mCSB_container').length>0) {
+			if (userid == $("#sessionId").val()) {
+				$('<div class="message message-personal">' + message + '</div>').appendTo($('.mCSB_container')).addClass('new');
+				setDate();
+				updateScrollbar();
+			} else {
+				audio.play();
+				$('<div class="message new"><figure class="avatar"><img src="http://askavenue.com/img/17.jpg" /></figure>' + message + '</div>').appendTo($('.mCSB_container')).addClass('new');
+				setDate();
+				updateScrollbar();
+			}
+		}
+		else{
+			toastr.info(userid + "  sent new message");
+		}
+	} else if (purpose == "notification") {
+		toastr.info(userid + "  " + message);
+	}
 
 }
 

@@ -47,7 +47,6 @@ public class CsReplyController {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println("asdasdsa");
 			result = new ResponseEntity<String>("fail", HttpStatus.BAD_REQUEST);
 		}
 		return result;

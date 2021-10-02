@@ -1,12 +1,18 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="s"%>
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <body>
 
+	
+	<s:authorize access="isAuthenticated()">
+		<audio id='audio' src='/resources/liveChat/alarm.mp3'></audio>
+		 <input type="text" id="sessionId" value="${sessionScope.loginMember.userid}" style="display: none"></input> 
+		<script src="/resources/liveChat/script.js"></script>
+	</s:authorize>
+	
 	<footer class="footer pt-5 mt-5">
 		<hr class="horizontal dark mb-5">
 		<div class="container">
@@ -97,30 +103,30 @@
 			</div>
 		</div>
 	</footer>
-	
-	
+
+
 	<!-- Footer Section End -->
 
 	<!--   Core JS Files   -->
-  <script src="/assets/js/core/popper.min.js" type="text/javascript"></script>
-  <script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
-  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <!--  Plugin for TypedJS, full documentation here: https://github.com/inorganik/CountUp.js -->
-  <script src="/assets/js/plugins/countup.min.js"></script>
-  <script src="/assets/js/plugins/choices.min.js"></script>
-  <script src="/assets/js/plugins/prism.min.js"></script>
+	<script src="/assets/js/core/popper.min.js" type="text/javascript"></script>
+	<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+	<script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
+	<!--  Plugin for TypedJS, full documentation here: https://github.com/inorganik/CountUp.js -->
+	<script src="/assets/js/plugins/countup.min.js"></script>
+	<script src="/assets/js/plugins/choices.min.js"></script>
+	<script src="/assets/js/plugins/prism.min.js"></script>
 
-  <!--  Plugin for Parallax, full documentation here: https://github.com/dixonandmoe/rellax -->
-  <script src="/assets/js/plugins/rellax.min.js"></script>
-  <!--  Plugin for TiltJS, full documentation here: https://gijsroge.github.io/tilt.js/ -->
-  <script src="/assets/js/plugins/tilt.min.js"></script>
-  <!--  Plugin for Selectpicker - ChoicesJS, full documentation here: https://github.com/jshjohnson/Choices -->
-  <script src="/assets/js/plugins/choices.min.js"></script>
-  <!--  Plugin for Parallax, full documentation here: https://github.com/wagerfield/parallax  -->
-  <script src="/assets/js/plugins/parallax.min.js"></script>
-  <!-- Control Center for Soft UI Kit: parallax effects, scripts for the example pages etc -->
-  <!--  Google Maps Plugin    -->
- 
-  <script src="/assets/js/soft-design-system.min.js?v=1.0.5" type="text/javascript"></script>
+	<!--  Plugin for Parallax, full documentation here: https://github.com/dixonandmoe/rellax -->
+	<script src="/assets/js/plugins/rellax.min.js"></script>
+	<!--  Plugin for TiltJS, full documentation here: https://gijsroge.github.io/tilt.js/ -->
+	<script src="/assets/js/plugins/tilt.min.js"></script>
+	<!--  Plugin for Selectpicker - ChoicesJS, full documentation here: https://github.com/jshjohnson/Choices -->
+	<script src="/assets/js/plugins/choices.min.js"></script>
+	<!--  Plugin for Parallax, full documentation here: https://github.com/wagerfield/parallax  -->
+	<script src="/assets/js/plugins/parallax.min.js"></script>
+	<!-- Control Center for Soft UI Kit: parallax effects, scripts for the example pages etc -->
+	<!--  Google Maps Plugin    -->
+
+	<script src="/assets/js/soft-design-system.min.js?v=1.0.5" type="text/javascript"></script>
 </body>
 </html>

@@ -24,5 +24,8 @@
 	<update id="increaseReadCount">
 	update cs set readcount=readcount+1 where no=#{no}
 	</update>
-	<delete id="deleteBoard"></delete> 
+	<delete id="deleteBoard">
+	delete from cs where no=#{bno}
+	
+	</delete> 
 </mapper>
