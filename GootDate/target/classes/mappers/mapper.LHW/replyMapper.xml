@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gootdate.mapper.replyMapper">
+<mapper namespace="com.gootdate.reply.dao.lhw.CsReplyDao">
 	<!--select-->
 	<select id="replyList" resultType="com.gootdate.domain.CSReplyVo">
-  		select * from csreply where bno=#{bno}
+  		select a.*,(SELECT likeordislike FROM replylikes b WHERE b.rno = a.no and userid=#{userid})as likeordislike,
+					(SELECT count(*) FROM replylikes b WHERE b.rno = a.no and likeordislike=1)as likecount,
+					(SELECT count(*) FROM replylikes b WHERE b.rno = a.no and likeordislike=-1)as dislikecount
+ 		from csreply a where bno=#{bno};
   	</select>
 	<!--inert-->
 	<insert id="create">
 		insert into csreply(bno,contents,replyer,issecret,parentno) values(#{bno},#{contents},#{replyer},#{isSecret},#{parentno})
 	</insert>
 	<!--update-->
-	<update id="modify">
+	<update id="update">
 		update csreply set contents=#{contents},date=now(), issecret=#{isSecret} where no=#{no}
 	</update>
 	<!--delete-->
-	<delete id="remove">
+	<delete id="delete">
 		delete from csreply where no= #{no} or parentno=#{no}
 	</delete>
+	<select id="getCsLikeVo" resultType="com.gootdate.domain.CSLikeVo">
+	select *from replylikes where rno=#{rno} and userid=#{userid}
+	</select>
+	<update id="makeLikeTo1">
+	update replylikes set likeordislike=1 where rno=#{rno} and userid=#{userid}
+	</update>
+	<delete id="deleteLike">
+	delete from replylikes where rno=#{rno} and userid=#{userid}
+	</delete>
+	<update id="makeLikeToMinus1">
+	update replylikes set likeordislike=-1 where rno=#{rno} and userid=#{userid}
+	</update>
+	<insert id="insertLike">
+	insert into replylikes(rno, userid, likeordislike) 
+  		values (#{rno}, #{userid}, #{likeordislike})
+	</insert>
 </mapper>

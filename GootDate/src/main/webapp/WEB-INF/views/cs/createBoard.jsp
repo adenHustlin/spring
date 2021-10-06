@@ -21,22 +21,29 @@
 
 		CKEDITOR.replace('content', ckeditor_config);
 	});
+	function onsumbit(){
+		if($("#issecret").prop("checked")){
+			$("#issecret").val("Y");
+		}else{
+			$("#issecret").val("N");
+		}
+		
+	}
 </script>
 </head>
 <style>
-
 </style>
 <body>
-	
+
 	<h2>Ask Us</h2>
 	<div class="container" id="container">
-		<form action="/cs/createBoard" method="post">
+		<form action="/cs/createBoard" method="post" onsubmit="onsumbit();">
 			<div class="mb-3">
 				<label class="form-label">title</label> <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title" required>
 			</div>
 			<input type="text" name="writer" value="${loginMember.userid}" style="display: none;">
 			<textarea id="content" name="content" required></textarea>
-
+			<input type="checkbox" value="N" id="issecret" name="issecret"> <label class="form-check-label"> Secret Article</label>
 			<div class="d-grid gap-2 col-6 mx-auto" style="padding: 50px">
 
 				<button class="btn btn-outline-secondary" type="submit">Write</button>

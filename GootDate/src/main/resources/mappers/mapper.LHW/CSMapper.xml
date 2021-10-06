@@ -8,9 +8,18 @@
   	</select>
 
 	<insert id="createBoard">
-  		insert into cs(title, writer, content) 
+		<choose><when test='issecret=="Y"'>
+		insert into cs(title, writer, content,issecret) 
+  		values (#{title}, #{writer},#{content},#{issecret})
+		</when>
+		<otherwise>
+		insert into cs(title, writer, content) 
   		values (#{title}, #{writer}, #{content})
-  	</insert>
+		</otherwise>
+		</choose>
+		
+
+	</insert>
 
 	<insert id="insertMemberPoint">
   		insert into memberpoint(userid, howmuch, why) values(#{userid}, #{howmuch}, #{why})
@@ -26,6 +35,66 @@
 	</update>
 	<delete id="deleteBoard">
 	delete from cs where no=#{bno}
+	</delete>
+	<select id="getCsLikeVo" resultType="com.gootdate.domain.CSLikeVo">
+	select *from cslikes where bno=#{bno} and userid=#{userid}
+	</select>
+	<select id="countLikes" resultType="int">
+	select count(*) from cslikes where likeordislike=1 and bno=#{bno}
 	
-	</delete> 
+	</select>
+	<select id="countDisLikes" resultType="int">
+	select count(*) from cslikes where likeordislike=-1 and bno=#{bno}
+	</select>
+	<update id="makeLikeTo1">
+	update cslikes set likeordislike=1 where bno=#{bno} and userid=#{userid}
+	</update>
+	<delete id="deleteLike">
+	delete from cslikes where bno=#{bno} and userid=#{userid}
+	</delete>
+	<update id="makeLikeToMinus1">
+	update cslikes set likeordislike=-1 where bno=#{bno} and userid=#{userid}
+	</update>
+	<insert id="insertLike">
+	insert into cslikes(bno, userid, likeordislike) 
+  		values (#{bno}, #{userid}, #{likeordislike})
+	</insert>
+	<update id="processCs">
+
+		<choose>
+			<when test="likeordislike ==0">
+			update cs set ${columnName}=${columnName}+1 where no=#{bno}
+			</when>
+			<when test="likeordislike ==1 || likeordislike ==-1">
+			update cs set ${columnName}=${columnName}-1 where no=#{bno}
+			</when>
+		</choose>
+	</update>
+	<update id="switchingLike">
+		<choose>
+			<when test="likeordislike ==1">
+			update cs set likecount=likecount-1,dislikecount=dislikecount+1 where no=#{bno}
+			</when>
+			<when test="likeordislike ==-1">
+			update cs set likecount=likecount+1,dislikecount=dislikecount-1 where no=#{bno}
+			</when>
+		</choose>
+
+	</update>
+	<update id="editBoard">
+		update cs set title=#{title},content=#{content},issecret=#{issecret} where no=#{no}
+	</update>
+	<select id="getList" resultType="com.gootdate.domain.CSVo">
+		select a.*,(SELECT likeordislike FROM cslikes b WHERE b.bno = a.no and userid=#{userid})as likeordislike			
+ 		from cs a
+		<choose>
+			<when test='searchwith=="title+content"'>
+			where title like '%${searchword}%' or content like '%${searchword}%'	
+			</when>
+			<otherwise>
+			where ${searchwith} like'%${searchword}%'
+			</otherwise>
+		</choose>
+		order by ${sortwith} desc;
+	</select>
 </mapper>

@@ -14,11 +14,12 @@ $(function() {
 	}
 
 	//웹소켓 객체 만드는 코드
-	/*ws = new WebSocket('ws://localhost:8081/websocket');*/
-	ws = new WebSocket('ws://3.34.86.169:8080/websocket');
+	ws = new WebSocket('ws://localhost:8081/websocket');
+	/*ws = new WebSocket('ws://3.34.86.169:8080/websocket');*/
 	console.log(ws)
 	ws.onopen = function(event) {
 		console.log("connected")
+		
 		ws.send($("#sessionId").val() + "," + "connected" + "," + " has been connected");
 
 
@@ -27,7 +28,9 @@ $(function() {
 		ProcessMessage(event);
 	};
 	ws.onclose = function(event) {
+		
 		if (event.data === undefined) return;
+	
 		console.log("websocket closed")
 	}
 
@@ -84,11 +87,15 @@ function setDate() {
 
 //웹소켓에서 받아온 메시지 출력
 function ProcessMessage(event) {
+	if(event.data.includes("Online Member")){
+		console.log("onlince member")
+		$("#online").html(event.data)
+	}
 	let str = event.data.split(",");
 	let userid = str[0];
 	let purpose = str[1]
 	let message = str[2];
-
+	
 
 	if (purpose == "connected") {
 		toastr.info(userid + "  " + message);

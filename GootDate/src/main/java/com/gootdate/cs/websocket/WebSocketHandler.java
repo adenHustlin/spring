@@ -33,10 +33,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 			
-//		String[] messageAr=message.getPayload().split(",");
-//		String memberId=messageAr[0];
-//		String purpose=messageAr[1];
-//		String msg=messageAr[2];
+		String[] messageAr=message.getPayload().split(",");
+		String memberId=messageAr[0];
+		String purpose=messageAr[1];
+		String msg=messageAr[2];
+		if(purpose.compareTo("connected")==0 || purpose.compareTo("disconnected")==0) {
+			for (WebSocketSession sess : sessionList) {
+		          sess.sendMessage(new TextMessage(sessionList.size()+"   Online Member"));
+		        }
+		
+		}
+			System.out.println(sessionList.size());
 			System.out.println(message.getPayload());
 	        for (WebSocketSession sess : sessionList) {
 	          sess.sendMessage(new TextMessage(message.getPayload()));
@@ -49,6 +56,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		sessionList.remove(session);
         System.out.println("disconnected");
+        
 	}
 	
 

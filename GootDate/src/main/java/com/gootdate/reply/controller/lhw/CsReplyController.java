@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gootdate.domain.CSLikeVo;
 import com.gootdate.domain.CSReplyVo;
 import com.gootdate.reply.service.lhw.CsReplyService;
 
@@ -54,12 +56,14 @@ public class CsReplyController {
 	}
 
 //댓글목록
-	@RequestMapping(value = "/viewReplies/{bno}", method = RequestMethod.GET)
-	public List<CSReplyVo> viewReply(@PathVariable("bno") String value, Model model, HttpServletRequest request)
+	@RequestMapping(value = "/viewReplies/{bno}/{userid}", method = RequestMethod.GET)
+	public List<CSReplyVo> viewReply(@PathVariable("bno") String value,@PathVariable("userid")String userid)
 			throws Exception {
 		int bno = Integer.parseInt(value);
-		System.out.println("view replies process " + bno + request.getContextPath());
-		List<CSReplyVo> vo = service.listReply(bno);
+		
+		System.out.println("view replies process " + bno +userid);
+		
+		List<CSReplyVo> vo = service.listReply(bno,userid);
 		return vo;
 
 	}
@@ -69,7 +73,7 @@ public class CsReplyController {
 	public boolean editReply(@RequestBody CSReplyVo vo) throws Exception {
 		System.out.println(vo.toString());
 		return service.modifyReply(vo);
-
+		
 	}
 
 	// 댓글삭제
@@ -78,5 +82,51 @@ public class CsReplyController {
 		System.out.println(no);
 		return service.removeReply(no);
 	}
+	@RequestMapping("/processLike")
+	public String processLike(@RequestBody CSLikeVo vo) {
+//		
 
+		if (service.getCSLikeVo(vo) == null) {// 처음눌렀을떄 0
+
+			vo.setLikeordislike(1);
+			service.insertLike(vo);
+
+			return "insertLike";
+		} else if (service.getCSLikeVo(vo).getLikeordislike() == 1) {// 다시눌렀을떄 1
+			vo.setLikeordislike(0);
+			service.deleteLike(vo);
+
+			return "deleteLike";
+		} else {// 싫어요눌렀다가 바로 좋아요눌렀을떄 -1
+			
+			service.makeLikeTo1(vo);
+			
+			return "increaseLike";
+		}
+
+	}
+	@RequestMapping("/processDislike")
+	@ResponseBody
+	public String processDislike(@RequestBody CSLikeVo vo) {
+//		
+
+		if (service.getCSLikeVo(vo) == null) {
+			vo.setLikeordislike(-1);
+			service.insertLike(vo);
+
+			return "insertDislike";
+		} else if (service.getCSLikeVo(vo).getLikeordislike()== -1) {
+
+			vo.setLikeordislike(0);
+			service.deleteLike(vo);
+
+			return "deleteDislike";
+		} else {
+		
+			service.makeLikeToMinus1(vo);
+			
+			return "increaseDislike";
+		}
+
+	}
 }

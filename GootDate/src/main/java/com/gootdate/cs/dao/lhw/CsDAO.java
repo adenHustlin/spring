@@ -2,9 +2,11 @@ package com.gootdate.cs.dao.lhw;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.NamingException;
 
+import com.gootdate.domain.CSLikeVo;
 import com.gootdate.domain.CSVo;
 import com.gootdate.domain.MemberPointVo;
 import com.gootdate.domain.PagingInfoDTO;
@@ -19,7 +21,7 @@ public interface CsDAO {
 
 	// Read
 	// 게시판 전체 글 불러오기
-	List<CSVo> selectAllBoard(int pageNo, PagingInfoDTO pi) throws NamingException, SQLException;
+	List<CSVo> selectAllBoard(PagingInfoDTO pi) throws NamingException, SQLException;
 
 	// 전체글수 얻어오기
 	int selectCntPost() throws NamingException, SQLException;
@@ -37,9 +39,32 @@ public interface CsDAO {
 	/**
 	 * @date:2021. 9. 7. return value:
 	 */
-	void updateReadCount(int no) throws NamingException, SQLException;
+	void updateCs(int no) throws NamingException, SQLException;
 
 //delete
 	void deleteBoard(int bno);
 
+	CSLikeVo getCSLikeVo(CSLikeVo vo);
+
+	int countLikes(CSLikeVo vo);
+
+	int countDisLikes(CSLikeVo vo);
+
+	void makeLikeTo1(CSLikeVo vo);
+
+	void makeLikeToMinus1(CSLikeVo vo);
+
+	void deleteLike(CSLikeVo vo);
+
+	void inserLike(CSLikeVo vo);
+
+	void processCs(CSLikeVo vo);
+
+	void switchingLike(CSLikeVo vo);
+
+	
+
+	void editBoard(CSVo vo);
+
+	List<CSVo> getList(CSVo vo);
 }

@@ -34,7 +34,10 @@
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- live notification -->
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+	integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous"
+>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
@@ -51,6 +54,30 @@
 h2 {
 	text-align: center;
 	padding: 100px 0px 100px 0px;
+}
+
+.online {
+	position: absolute;
+	top: 20px;
+	left: 40px;
+	color: green;
+	text-decoration: none;
+	transition: 1s;
+	z-index: 10000;
+}
+/* .onlineImg{
+position: absoulte;
+	top: 20px;
+	left: 20px;
+	color: green;
+	text-decoration: none;
+	transition: 1s;
+	z-index: 10000;
+
+} */
+
+#online:hover {
+	text-shadow: 0 0 .1em, 0 0 .3em;
 }
 </style>
 <script type="text/javascript">
@@ -124,9 +151,9 @@ h2 {
 		</div>
 	</div>
 	<!-- nav End -->
-<s:authorize access="isAuthenticated()">
+	<s:authorize access="isAuthenticated()">
 		<audio id='audio' src='/resources/liveChat/alarm.mp3'></audio>
-		 <input type="text" id="sessionId" value="${sessionScope.loginMember.userid}" style="display: none"></input> 
-
+		<input type="text" id="sessionId" value="${sessionScope.loginMember.userid}" style="display: none"></input>
+		<span class="online" style="left:20px"><img src="/resources/imgs/online.png" style="width: 10px; position: relative; z-index: 10000;"></span>
+		<span id="online" class="online"></span>
 	</s:authorize>
-	
